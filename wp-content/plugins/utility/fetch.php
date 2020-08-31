@@ -36,7 +36,7 @@ if(isset($_GET['score']) && $_GET['score'] != '')
 	}
 }
 
-$ids = $wpdb->get_col("select * from $fmdb where 1");
+$ids = $wpdb->get_col("select * from $fmdb where matching != 0");
 $maxids = count($ids);
 $retryCount = 0;
 

@@ -18,8 +18,8 @@ if(isset($_GET['score']) && $_GET['score'] != '')
 
 	if($score == 0 || $score == 1 || $score == 0.5)
 	{
-		$left = $wpdb->get_row($wpdb->prepare("select * from $fmdb where matching > 0",$lid));
-		$right = $wpdb->get_row($wpdb->prepare("select * from $fmdb where matching > 0",$rid));
+		$left = $wpdb->get_row($wpdb->prepare("select * from $fmdb where id = %d",$lid));
+		$right = $wpdb->get_row($wpdb->prepare("select * from $fmdb where id = %d",$rid));
 		
 		$ratingA = $right->rating;
 		$ratingB = $left->rating;
@@ -34,7 +34,7 @@ if(isset($_GET['score']) && $_GET['score'] != '')
 	}
 }
 
-$ids = $wpdb->get_col("select * from $fmdb where 1");
+$ids = $wpdb->get_col("select * from $fmdb where matching != 0");
 $maxids = count($ids);
 $retryCount = 0;
 
@@ -49,7 +49,7 @@ while(1) {
 	}
 		
 	$id = $ids[rand(0,$maxids)];
-	$left = $wpdb->get_row($wpdb->prepare("select * from $fmdb where matching > 0",$id));
+	$left = $wpdb->get_row($wpdb->prepare("select * from $fmdb where id = %d",$id));
 	
 	$tries = 0;
 	while(($id2 = $ids[rand(0,$maxids)]) == $id)
@@ -61,7 +61,7 @@ while(1) {
 			break;
 		}
 	}
-	$right = $wpdb->get_row($wpdb->prepare("select * from $fmdb where matching > 0",$id2));
+	$right = $wpdb->get_row($wpdb->prepare("select * from $fmdb where id = %d",$id2));
 	
 	if($left->url != '' && $right->url != '')
 	{

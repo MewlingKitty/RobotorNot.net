@@ -499,8 +499,8 @@ function defenseReport()
 	global $wpdb;
 	$fmtable = $wpdb->prefix . "defense_images";;
 	
-	print "<h2>defense Report</h2>";
-	$topImages = $wpdb->get_results("select * from $fmtable where 1 order by `rating` DESC limit 0,20");
+	print "<h2>Defense Report</h2>";
+	$topImages = $wpdb->get_results("select * from $fmtable where 1 order by `rating` DESC");
 
 ?>
 
@@ -508,7 +508,7 @@ function defenseReport()
 <div id="post-body">
     <div id="post-body-content">
         <div id="namediv" class="stuffbox">
-            <h3><label for="link_name">Top 20 Performing Photos</label></h3>
+            <h3><label for="link_name">Leaderboard</label></h3>
 	    <div class="inside">
 <?php	
 	$k = 0;

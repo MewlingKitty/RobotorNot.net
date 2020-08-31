@@ -3,8 +3,8 @@
     var FormPaypalTax_7 = '0';
     var check_submit7 = 0;
     var check_before_submit7 = {};
-    var required_fields7 = [];
-    var labels_and_ids7 = {"2":"type_text","1":"type_submit_reset"};
+    var required_fields7 = ["3"];
+    var labels_and_ids7 = {"3":"type_text","4":"type_star_rating","5":"type_submit_reset"};
     var check_regExp_all7 = [];
     var check_paypal_price_min_max7 = [];
     var file_upload_check7 = [];
@@ -16,15 +16,34 @@
     var inputIds7 = '[]';
         var update_first_field_id7 = 0;
     var form_view_count7 = 0;
-     function before_load7() {	
-}	
+     function before_load7() {
+     
+}
+
  function before_submit7() {
-	 }	
- function before_reset7() {	
+      }
+
+ function before_reset7() {
+     
 }
  function after_submit7() {
-  
-}    function onload_js7() {    }
+     
+}    function onload_js7() {
+  jQuery("#wdform_4_star_0_7").mouseover(function() {change_src(0,"wdform_4", 7, "red");});
+  jQuery("#wdform_4_star_0_7").mouseout(function() {reset_src(0,"wdform_4", 7);});
+  jQuery("#wdform_4_star_0_7").click(function() {select_star_rating(0,"wdform_4", 7,"red", "5");});
+  jQuery("#wdform_4_star_1_7").mouseover(function() {change_src(1,"wdform_4", 7, "red");});
+  jQuery("#wdform_4_star_1_7").mouseout(function() {reset_src(1,"wdform_4", 7);});
+  jQuery("#wdform_4_star_1_7").click(function() {select_star_rating(1,"wdform_4", 7,"red", "5");});
+  jQuery("#wdform_4_star_2_7").mouseover(function() {change_src(2,"wdform_4", 7, "red");});
+  jQuery("#wdform_4_star_2_7").mouseout(function() {reset_src(2,"wdform_4", 7);});
+  jQuery("#wdform_4_star_2_7").click(function() {select_star_rating(2,"wdform_4", 7,"red", "5");});
+  jQuery("#wdform_4_star_3_7").mouseover(function() {change_src(3,"wdform_4", 7, "red");});
+  jQuery("#wdform_4_star_3_7").mouseout(function() {reset_src(3,"wdform_4", 7);});
+  jQuery("#wdform_4_star_3_7").click(function() {select_star_rating(3,"wdform_4", 7,"red", "5");});
+  jQuery("#wdform_4_star_4_7").mouseover(function() {change_src(4,"wdform_4", 7, "red");});
+  jQuery("#wdform_4_star_4_7").mouseout(function() {reset_src(4,"wdform_4", 7);});
+  jQuery("#wdform_4_star_4_7").click(function() {select_star_rating(4,"wdform_4", 7,"red", "5");});    }
 
     function condition_js7() {    }
 
@@ -39,6 +58,7 @@
 
     function onsubmit_js7() {
       
+  jQuery("<input type=\"hidden\" name=\"wdform_4_star_amount7\" value=\"5\" />").appendTo("#form7");
     var disabled_fields = "";
     jQuery("#form7 div[wdid]").each(function() {
       if(jQuery(this).css("display") == "none") {
