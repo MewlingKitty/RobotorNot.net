@@ -3,7 +3,7 @@
     var FormPaypalTax_6 = '0';
     var check_submit6 = 0;
     var check_before_submit6 = {};
-    var required_fields6 = [];
+    var required_fields6 = ["9","10","11","12","13","14"];
     var labels_and_ids6 = {"9":"type_own_select","10":"type_own_select","11":"type_own_select","12":"type_own_select","13":"type_own_select","14":"type_own_select","15":"type_submit_reset"};
     var check_regExp_all6 = [];
     var check_paypal_price_min_max6 = [];

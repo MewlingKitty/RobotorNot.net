@@ -1,4 +1,4 @@
-jQuery(document).ready(function() {
+jQuery(function() {
 	jQuery('.theme-detail').click(function () {
 		jQuery(this).siblings('.themedetaildiv').toggle();
 		return false;
@@ -196,7 +196,7 @@ function set_columns_history_checked() {
 			jQuery('#ChBAll').removeClass('fm-remove_before');
 		}
 		jQuery.each( show_hide_column_ids, function ( i, val) {
-			jQuery('#ChBDiv #'+ val).prop('checked',true).attr('checked');
+			jQuery('#ChBDiv #'+ val).prop('checked',true).prop('checked');
 		});
 	}
 }

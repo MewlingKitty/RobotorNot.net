@@ -195,7 +195,7 @@ function fm_validate_email(value, obj) {
   var emails = value.split(',');
 
   /* Regexp is also for Cyrillic alphabet */
-  var re = /^[\u0400-\u04FFa-zA-Z0-9.+_-]+@[\u0400-\u04FFa-zA-Z0-9.-]+\.[\u0400-\u04FFa-zA-Z]{2,61}$/;
+  var re = /^[\u0400-\u04FFa-zA-Z0-9'.+_-]+@[\u0400-\u04FFa-zA-Z0-9.-]+\.[\u0400-\u04FFa-zA-Z]{2,61}$/;
   var rePlaceholder = /^({)[0-9]+(})$/;
 
   var allowed_placeholders = ['{adminemail}', '{useremail}'];

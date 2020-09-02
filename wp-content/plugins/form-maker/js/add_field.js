@@ -22,7 +22,7 @@ jQuery(window).on('load', function () {
   });
 });
 
-jQuery(document).ready(function () {
+jQuery(function () {
   // Add close event to first time use message.
   jQuery(".first-time-use-close").on("click", function () {
     if (storageAvailable("localStorage")) {
@@ -30,7 +30,6 @@ jQuery(document).ready(function () {
     }
     jQuery(".first-time-use").hide();
   });
-
   // Hide first time use message on add field button drag.
   jQuery(".wdform_column").on( "sortstart", function( event, ui ) {
     jQuery(".first-time-use").hide();
@@ -1122,8 +1121,8 @@ function edit(id, e) {
         w_choices[t] = jQuery(this).html();
         w_choices_value[t] = jQuery(this).val();
         w_choices_checked[t] = jQuery(this)[0].selected;
-        if (jQuery(this).attr('where')) {
-          w_choices_params[t] = jQuery(this).attr('where') + '[where_order_by]' + jQuery(this).attr('order_by') + '[db_info]' + jQuery(this).attr('db_info');
+        if (jQuery(this).prop('where')) {
+          w_choices_params[t] = jQuery(this).prop('where') + '[where_order_by]' + jQuery(this).prop('order_by') + '[db_info]' + jQuery(this).prop('db_info');
         }
         else {
           w_choices_params[t] = '';
@@ -1149,8 +1148,8 @@ function edit(id, e) {
         w_choices[t] = jQuery(this).html();
         w_choices_price[t] = jQuery(this).val();
         w_choices_checked[t] = jQuery(this)[0].selected;
-        if (jQuery(this).attr('where')) {
-          w_choices_params[t] = jQuery(this).attr('where') + '[where_order_by]' + jQuery(this).attr('order_by') + '[db_info]' + jQuery(this).attr('db_info');
+        if (jQuery(this).prop('where')) {
+          w_choices_params[t] = jQuery(this).prop('where') + '[where_order_by]' + jQuery(this).prop('order_by') + '[db_info]' + jQuery(this).prop('db_info');
         }
         else {
           w_choices_params[t] = '';
@@ -2056,7 +2055,7 @@ function draggable_page_break( nextID, form_view_max ) {
   if( typeof nextID === 'undefined' || nextID === null || nextID == "" || get_child_count() > 2) {         // when add field button submitted not moved
     return;
   }
-  var str = jQuery("#cur_column").parent().parent().attr("id");
+  var str = jQuery("#cur_column").parent().parent().prop("id");
   var endPoint = parseInt(str.substr(str.indexOf("form_id_tempform_view") + 21)); // break conteiner number
 
   if ( form_view_max == 2 ) {                                                     // if break first time
@@ -2162,7 +2161,7 @@ function close_window() {
   if (need_enable) {
     popup_ready();
     /* In Firfox and Safari click action is working during the drag and drop also */
-    /*jQuery(".add-new-button").attr("onclick","popup_ready(); Enable(); return false;");*/
+    /*jQuery(".add-new-button").prop("onclick","popup_ready(); Enable(); return false;");*/
   }
   need_enable = true;
   document.getElementById('edit_table').innerHTML = "";
@@ -2206,9 +2205,9 @@ function addRow(event, that, type, subtype) {
 
 function fm_add_field_button(that, subtype) {
   if (jQuery(that).hasClass('wd-pro-fields') && subtype != 'stripe') {
-    jQuery('#edit_main_table input').attr('disabled', 'disabled');
-    jQuery('#edit_main_table textarea').attr('disabled', 'disabled');
-    jQuery('#edit_main_table .fm-input-container span.dashicons').attr('onclick', '');
+    jQuery('#edit_main_table input').prop('disabled', 'disabled');
+    jQuery('#edit_main_table textarea').prop('disabled', 'disabled');
+    jQuery('#edit_main_table .fm-input-container span.dashicons').prop('onclick', '');
     jQuery('#add-button-cont').removeClass('add-button-cont').html('');
     jQuery('#premium_message').removeClass('fm-hidden');
     jQuery('#stripe_message').addClass('fm-hidden');
@@ -2216,9 +2215,9 @@ function fm_add_field_button(that, subtype) {
   }
   else {
     if (subtype == 'stripe' && (is_addon_stripe_active == 0 || is_stripe_enabled == 0)) {
-      jQuery('#edit_main_table input').attr('disabled', 'disabled');
-      jQuery('#edit_main_table textarea').attr('disabled', 'disabled');
-      jQuery('#edit_main_table .fm-input-container span.dashicons').attr('onclick', '');
+      jQuery('#edit_main_table input').prop('disabled', 'disabled');
+      jQuery('#edit_main_table textarea').prop('disabled', 'disabled');
+      jQuery('#edit_main_table .fm-input-container span.dashicons').prop('onclick', '');
       if (!jQuery(that).hasClass('wd-pro-fields') && is_stripe_enabled == 0 && is_addon_stripe_active == 1) {
         jQuery('#add-button-cont').removeClass('add-button-cont').html('<div class="error"><p>' + form_maker.stripe3 + '</p></div>');
         jQuery( '#premium_message' ).addClass( 'fm-hidden' );
@@ -2712,7 +2711,7 @@ function create_additional_attributes(i, w_attr_name, type) {
 function add_attr(i, type) {
   var el_attr_table = jQuery('#attributes');
   el_attr_table.show();
-  j = parseInt(el_attr_table.children().last().attr('idi')) + 1;
+  j = parseInt(el_attr_table.children().last().prop('idi')) + 1;
   w_attr_name = "attribute";
   w_attr_value = "value";
   var attr = jQuery('<div idi="' + j + '" id="attr_row_' + j + '" class="fm-width-100"><div class="fm-table-col fm-width-45"><input type="text" class="fm-field-choice" id="attr_name' + j + '" value="' + w_attr_name + '" onChange="change_attribute_name(\'' + i + '\', this, \'' + type + '\')" /></div><div class="fm-table-col fm-width-45"><input type="text" class="fm-field-choice" id="attr_value' + j + '" value="' + w_attr_value + '" onChange="change_attribute_value(' + i + ', ' + j + ', \'' + type + '\')" /></div><div class="fm-table-col"><span class="fm-remove-attribute dashicons dashicons-dismiss" id="el_choices' + j + '_remove" onClick="remove_attr(' + j + ', ' + i + ', \'' + type + '\')"></span></div></div>');
@@ -3776,7 +3775,7 @@ function change_hidden_input_value(element_value, date_fields, id_int, id) {
       jQuery("#" + id_int + "_elementform_id_temp").datepicker("setDate", new Date());
     else if (element_value.indexOf("d") == -1 && element_value.indexOf("m") == -1 && element_value.indexOf("y") == -1 && element_value.indexOf("w") == -1) {
       if (element_value !== "")
-        element_value = jQuery.datepicker.formatDate(jQuery("#" + id_int + "_buttonform_id_temp").attr('format'), new Date(element_value));
+        element_value = jQuery.datepicker.formatDate(jQuery("#" + id_int + "_buttonform_id_temp").prop('format'), new Date(element_value));
       jQuery("#" + id_int + "_elementform_id_temp").datepicker("setDate", element_value);
     }
     else {
@@ -3788,7 +3787,7 @@ function change_hidden_input_value(element_value, date_fields, id_int, id) {
       jQuery("#" + id_int + "_elementform_id_temp").datepicker('option', date_fields, new Date());
     else if (element_value.indexOf("d") == -1 && element_value.indexOf("m") == -1 && element_value.indexOf("y") == -1 && element_value.indexOf("w") == -1) {
       if (element_value !== "")
-        element_value = jQuery.datepicker.formatDate(jQuery("#" + id_int + "_buttonform_id_temp").attr('format'), new Date(element_value));
+        element_value = jQuery.datepicker.formatDate(jQuery("#" + id_int + "_buttonform_id_temp").prop('format'), new Date(element_value));
       jQuery("#" + id_int + "_elementform_id_temp").datepicker('option', date_fields, element_value);
     }
     else
@@ -3821,13 +3820,13 @@ function change_hidden_input_value(element_value, date_fields, id_int, id) {
           invalid_dates_finish.push(jQuery.datepicker.formatDate("mm/dd/yy", d));
         }
       });
-      var w_hide_sunday = jQuery("#" + id_int + "_show_week_days").attr('sunday') == 'yes' ? 'true' : 'day != 0';
-      var w_hide_monday = jQuery("#" + id_int + "_show_week_days").attr('monday') == 'yes' ? 'true' : 'day != 1';
-      var w_hide_tuesday = jQuery("#" + id_int + "_show_week_days").attr('tuesday') == 'yes' ? 'true' : 'day != 2';
-      var w_hide_wednesday = jQuery("#" + id_int + "_show_week_days").attr('wednesday') == 'yes' ? 'true' : 'day != 3';
-      var w_hide_thursday = jQuery("#" + id_int + "_show_week_days").attr('thursday') == 'yes' ? 'true' : 'day != 4';
-      var w_hide_friday = jQuery("#" + id_int + "_show_week_days").attr('friday') == 'yes' ? 'true' : 'day != 5';
-      var w_hide_saturday = jQuery("#" + id_int + "_show_week_days").attr('saturday') == 'yes' ? 'true' : 'day != 6';
+      var w_hide_sunday = jQuery("#" + id_int + "_show_week_days").prop('sunday') == 'yes' ? 'true' : 'day != 0';
+      var w_hide_monday = jQuery("#" + id_int + "_show_week_days").prop('monday') == 'yes' ? 'true' : 'day != 1';
+      var w_hide_tuesday = jQuery("#" + id_int + "_show_week_days").prop('tuesday') == 'yes' ? 'true' : 'day != 2';
+      var w_hide_wednesday = jQuery("#" + id_int + "_show_week_days").prop('wednesday') == 'yes' ? 'true' : 'day != 3';
+      var w_hide_thursday = jQuery("#" + id_int + "_show_week_days").prop('thursday') == 'yes' ? 'true' : 'day != 4';
+      var w_hide_friday = jQuery("#" + id_int + "_show_week_days").prop('friday') == 'yes' ? 'true' : 'day != 5';
+      var w_hide_saturday = jQuery("#" + id_int + "_show_week_days").prop('saturday') == 'yes' ? 'true' : 'day != 6';
 
       var day = date.getDay();
       var string_days = jQuery.datepicker.formatDate("mm/dd/yy", date);
@@ -4357,7 +4356,7 @@ function refresh_sel_options(id, type) {
     }
     else {
       jQuery('#' + id + '_value_disabledform_id_temp').val('no');
-      jQuery('.el_option_value').attr('disabled', 'disabled');
+      jQuery('.el_option_value').prop('disabled', 'disabled');
     }
     refresh_rowcol(id, type);
   }
@@ -4365,11 +4364,11 @@ function refresh_sel_options(id, type) {
     if (jQuery('#el_disable_value').prop('checked')) {
       jQuery('#' + id + '_value_disabledform_id_temp').val('yes');
       jQuery('.el_option_value').removeAttr('disabled');
-      jQuery('.el_option_dis').attr('disabled', 'disabled');
+      jQuery('.el_option_dis').prop('disabled', 'disabled');
     }
     else {
       jQuery('#' + id + '_value_disabledform_id_temp').val('no');
-      jQuery('.el_option_value').attr('disabled', 'disabled');
+      jQuery('.el_option_value').prop('disabled', 'disabled');
       jQuery('.el_option_dis').removeAttr('disabled');
     }
     var select = document.getElementById(id + '_elementform_id_temp');
@@ -4402,10 +4401,10 @@ function refresh_sel_options(id, type) {
     });
   }
   if ( form_maker.is_demo ) {
-    jQuery('#el_choices_add').next().attr("onclick", "alert('This feature is disabled in demo.')");
+    jQuery('#el_choices_add').next().prop("onclick", "alert('This feature is disabled in demo.')");
   }
   else {
-    jQuery('#el_choices_add').next().attr("onclick", "tb_show('', 'admin-ajax.php?action=select_data_from_db&field_id=" + id + "&nonce=" + fm_ajax.ajaxnonce + "&field_type=" + type + "&value_disabled=" + jQuery("#" + id + "_value_disabledform_id_temp").val() + "&width=530&height=370&TB_iframe=1');return false;");
+    jQuery('#el_choices_add').next().prop("onclick", "tb_show('', 'admin-ajax.php?action=select_data_from_db&field_id=" + id + "&nonce=" + fm_ajax.ajaxnonce + "&field_type=" + type + "&value_disabled=" + jQuery("#" + id + "_value_disabledform_id_temp").val() + "&width=530&height=370&TB_iframe=1');return false;");
   }
 }
 
@@ -4513,7 +4512,7 @@ function add_choise(type, num) {
 function change_label_name(num, id, label, type) {
   jQuery('#' + id).html(label);
   if (!jQuery('#el_disable_value').prop('checked')) {
-    if (!jQuery('#el_choices' + num).attr('other')) {
+    if (!jQuery('#el_choices' + num).prop('other')) {
       jQuery('#el_option_value' + num).val(label);
     }
     if (type == 'select') {
@@ -4527,7 +4526,7 @@ function change_label_name_on_paste(num, id, label, type) {
     label = elem.value;
     jQuery('#' + id).html(label);
     if (!jQuery('#el_disable_value').prop('checked')) {
-      if (!jQuery('#el_choices' + num).attr('other')) {
+      if (!jQuery('#el_choices' + num).prop('other')) {
         jQuery('#el_option_value' + num).val(label);
       }
       if (type == 'select') {
@@ -4801,13 +4800,13 @@ function refresh_rowcol(num, type) {
       var adding = document.createElement('input');
       adding.setAttribute("type", type);
       adding.setAttribute("id", num + "_elementform_id_temp" + index);
-      if ( jQuery("#"+num + "_elementform_id_temp" + index).attr("checked") == "checked" )
+      if ( jQuery("#"+num + "_elementform_id_temp" + index).prop("checked") == "checked" )
         adding.setAttribute("checked", "checked");
       if (document.getElementById(num + "_option_left_right").value == "right")
         adding.style.cssText = "float: left !important";
       if (type == 'checkbox') {
         adding.setAttribute("name", num + "_elementform_id_temp" + index);
-        if (document.getElementById(num + "_allow_otherform_id_temp").value == "yes" && jQuery(this).find('#el_choices' + index).attr("other") == '1') {
+        if (document.getElementById(num + "_allow_otherform_id_temp").value == "yes" && jQuery(this).find('#el_choices' + index).prop("other") == '1') {
           adding.setAttribute("value", "");
           adding.setAttribute("other", "1");
           adding.setAttribute("onclick", "if(set_checked('" + num + "','" + index + "','form_id_temp')) show_other_input('" + num + "','form_id_temp');");
@@ -4823,7 +4822,7 @@ function refresh_rowcol(num, type) {
       }
       if (type == 'radio') {
         adding.setAttribute("name", num + "_elementform_id_temp");
-        if (document.getElementById(num + "_allow_otherform_id_temp").value == "yes" && jQuery(this).find('#el_choices' + index).attr("other") == '1') {
+        if (document.getElementById(num + "_allow_otherform_id_temp").value == "yes" && jQuery(this).find('#el_choices' + index).prop("other") == '1') {
           adding.setAttribute("value", "");
           adding.setAttribute("other", "1");
           adding.setAttribute("onClick", "set_default('" + num + "','" + index + "','form_id_temp'); show_other_input('" + num + "','form_id_temp');");
@@ -4878,13 +4877,13 @@ function refresh_rowcol(num, type) {
       var adding = document.createElement('input');
       adding.setAttribute("type", type);
       adding.setAttribute("id", num + "_elementform_id_temp" + index);
-      if ( jQuery("#"+num + "_elementform_id_temp" + index).attr("checked") == "checked" )
+      if ( jQuery("#"+num + "_elementform_id_temp" + index).prop("checked") == "checked" )
         adding.setAttribute("checked", "checked");
       if (document.getElementById(num + "_option_left_right").value == "right")
         adding.style.cssText = "float: left !important";
       if (type == 'checkbox') {
         adding.setAttribute("name", num + "_elementform_id_temp" + index);
-        if (document.getElementById(num + "_allow_otherform_id_temp").value == "yes" && jQuery(this).find('#el_choices' + index).attr('other') == '1') {
+        if (document.getElementById(num + "_allow_otherform_id_temp").value == "yes" && jQuery(this).find('#el_choices' + index).prop('other') == '1') {
           adding.setAttribute("value", "");
           adding.setAttribute("other", "1");
           adding.setAttribute("onclick", "if(set_checked('" + num + "','" + index + "','form_id_temp')) show_other_input('" + num + "','form_id_temp');");
@@ -4899,7 +4898,7 @@ function refresh_rowcol(num, type) {
       }
       if (type == 'radio') {
         adding.setAttribute("name", num + "_elementform_id_temp");
-        if (document.getElementById(num + "_allow_otherform_id_temp").value == "yes" && jQuery(this).find('#el_choices' + index).attr('other') == '1') {
+        if (document.getElementById(num + "_allow_otherform_id_temp").value == "yes" && jQuery(this).find('#el_choices' + index).prop('other') == '1') {
           adding.setAttribute("other", "1");
           adding.setAttribute("onClick", "set_default('" + num + "','" + index + "','form_id_temp'); show_other_input('" + num + "','form_id_temp')");
         }
@@ -5505,7 +5504,7 @@ function create_recaptcha_invisible(i, w_type) {
 }
 
 function fm_recaptcha_type(id, value) {
-  jQuery('#wd_recaptchaform_id_temp').attr('w_type', value);
+  jQuery('#wd_recaptchaform_id_temp').prop('w_type', value);
   if (value == 'invisible') {
       jQuery('#recaptcha_position').show();
       jQuery('#recaptcha_keys_message').show();
@@ -5513,7 +5512,7 @@ function fm_recaptcha_type(id, value) {
       jQuery('#recaptcha_score').hide();
 
       jQuery('#'+ id + '_hide_labelform_id_temp').val('no');
-      jQuery('#el_hide_label').attr('checked', 'checked');
+      jQuery('#el_hide_label').prop('checked', 'checked');
       hide_label(id);
   } else if(value == 'v3') {
       jQuery('#recaptcha_score').show();
@@ -5522,7 +5521,7 @@ function fm_recaptcha_type(id, value) {
       jQuery('#recaptcha_position').hide();
 
       jQuery('#'+ id + '_hide_labelform_id_temp').val('no');
-      jQuery('#el_hide_label').attr('checked', 'checked');
+      jQuery('#el_hide_label').prop('checked', 'checked');
       hide_label(id);
   } else {
       jQuery('#recaptcha_position').hide();
@@ -5563,7 +5562,7 @@ function create_recaptcha_position(i, w_position, w_type) {
 }
 
 function fm_recaptcha_position(id, value) {
-  jQuery('#wd_recaptchaform_id_temp').attr('position', value);
+  jQuery('#wd_recaptchaform_id_temp').prop('position', value);
 }
 
 function go_to_type_recaptcha(new_id) {
@@ -6303,7 +6302,7 @@ function enable_name_fields(id, field) {
 
   refresh_attr(id, 'type_name');
 
-  jQuery(document).ready(function () {
+  jQuery(function () {
     jQuery("label#" + id + "_mini_label_title").click(function () {
       if (jQuery(this).children('input').length == 0) {
         var title = "<input type='text' class='title' style='outline:none; border:none; background:none;' value=\"" + jQuery(this).text() + "\">";
@@ -6564,7 +6563,7 @@ function type_name(i, w_field_label, w_field_label_size, w_field_label_pos, w_hi
   if (w_name_fields[1] == 'yes')
     enable_name_fields(i, 'middle');
 
-  jQuery(document).ready(function () {
+  jQuery(function () {
     jQuery("label#" + i + "_mini_label_first").click(function () {
       if (jQuery(this).children('input').length == 0) {
         var first = "<input type='text' class='first' style='outline:none; border:none; background:none;' value=\"" + jQuery(this).text() + "\">";
@@ -7105,7 +7104,7 @@ function disable_fields(id, field) {
     change_state_input(id, 'form_id_temp');
   }
 
-  jQuery(document).ready(function (jQuery) {
+  jQuery(function (jQuery) {
     jQuery("label#" + id + "_mini_label_street1").click(function () {
       if (jQuery(this).children('input').length == 0) {
         var street1 = "<input type='text' class='street1' style='outline:none; border:none; background:none;' value=\"" + jQuery(this).text() + "\">";
@@ -7539,7 +7538,7 @@ function type_address(i, w_field_label, w_field_label_size, w_field_label_pos, w
   if (w_disabled_fields[6] == "yes")
     disable_fields(i, 'us_states');
 
-  jQuery(document).ready(function (jQuery) {
+  jQuery(function (jQuery) {
     jQuery("label#" + i + "_mini_label_street1").click(function () {
       if (jQuery(this).children('input').length == 0) {
         var street1 = "<input type='text' class='street1' style='outline:none; border:none; background:none; width:130px;' value=\"" + jQuery(this).text() + "\">";
@@ -8415,7 +8414,7 @@ function type_date_fields(i, w_field_label, w_field_label_size, w_field_label_po
   change_class(w_class, i);
   refresh_attr(i, 'type_date_fields');
 
-  jQuery(document).ready(function (jQuery) {
+  jQuery(function (jQuery) {
     jQuery("label#" + i + "_day_label").click(function () {
       if (jQuery(this).children('input').length == 0) {
         var day = "<input type='text' class='day' style='outline:none; border:none; background:none; width:100px;' value=\"" + jQuery(this).text() + "\">";
@@ -10206,7 +10205,7 @@ function add_marker(id, i, w_long, w_lat, w_info) {
   if (i == -1) {
     var last_child = markers.children().last();
     if (last_child.length > 0) {
-      i = parseInt(last_child.attr("idi")) + 1;
+      i = parseInt(last_child.prop("idi")) + 1;
     }
     else {
       i = 0;
@@ -10403,7 +10402,7 @@ function format_12(num, am_or_pm, w_hh, w_mm, w_ss) {
 
   refresh_attr(num, 'type_time');
 
-  jQuery(document).ready(function () {
+  jQuery(function () {
     jQuery("label#" + num + "_mini_label_am_pm").click(function () {
       if (jQuery(this).children('input').length == 0) {
         var am_pm = "<input type='text' class='am_pm' size='4' style='outline:none; border:none; background:none;' value=\"" + jQuery(this).text() + "\">";
@@ -10486,7 +10485,7 @@ function second_yes(id, w_ss) {
     text_box.appendChild(td_time_label3);
   }
 
-  jQuery(document).ready(function () {
+  jQuery(function () {
     jQuery("label#" + id + "_mini_label_ss").click(function () {
       if (jQuery(this).children('input').length == 0) {
         var ss = "<input type='text' class='ss' style='outline:none; border:none; background:none; width:40px;' value=\"" + jQuery(this).text() + "\">";
@@ -10759,7 +10758,7 @@ function type_time(i, w_field_label, w_field_label_size, w_field_label_pos, w_hi
   change_class(w_class, i);
   refresh_attr(i, 'type_time');
 
-  jQuery(document).ready(function () {
+  jQuery(function () {
     jQuery("label#" + i + "_mini_label_hh").click(function () {
       if (jQuery(this).children('input').length == 0) {
         var hh = "<input type='text' class='hh' size='4' style='outline:none; border:none; background:none;' value=\"" + jQuery(this).text() + "\">";
@@ -10943,7 +10942,7 @@ function change_hidden_input_value_range(element_value, date_fields, start_end, 
       }
       else if (element_value.indexOf("d") == -1 && element_value.indexOf("m") == -1 && element_value.indexOf("y") == -1 && element_value.indexOf("w") == -1) {
         if (element_value !== "") {
-          element_value = jQuery.datepicker.formatDate(jQuery("#" + id_int + "_buttonform_id_temp").attr('format'), new Date(element_value));
+          element_value = jQuery.datepicker.formatDate(jQuery("#" + id_int + "_buttonform_id_temp").prop('format'), new Date(element_value));
           jQuery("#" + id_int + "_elementform_id_temp0").datepicker("setDate", element_value);
           jQuery("#" + id_int + "_elementform_id_temp1").datepicker('option', 'minDate', element_value);
         }
@@ -10966,7 +10965,7 @@ function change_hidden_input_value_range(element_value, date_fields, start_end, 
       }
       else if (element_value.indexOf("d") == -1 && element_value.indexOf("m") == -1 && element_value.indexOf("y") == -1 && element_value.indexOf("w") == -1) {
         if (element_value !== "") {
-          element_value = jQuery.datepicker.formatDate(jQuery("#" + id_int + "_buttonform_id_temp").attr('format'), new Date(element_value));
+          element_value = jQuery.datepicker.formatDate(jQuery("#" + id_int + "_buttonform_id_temp").prop('format'), new Date(element_value));
           jQuery("#" + id_int + "_elementform_id_temp1").datepicker("setDate", element_value);
           jQuery("#" + id_int + "_elementform_id_temp0").datepicker('option', 'maxDate', new Date(element_value));
         }
@@ -11011,7 +11010,7 @@ function change_hidden_input_value_range(element_value, date_fields, start_end, 
     }
     else {
       if (element_value.indexOf("d") == -1 && element_value.indexOf("m") == -1 && element_value.indexOf("w") == -1 && element_value.indexOf("y") == -1 && element_value !== "") {
-        element_value = jQuery.datepicker.formatDate(jQuery("#" + id_int + "_buttonform_id_temp").attr('format'), new Date(element_value));
+        element_value = jQuery.datepicker.formatDate(jQuery("#" + id_int + "_buttonform_id_temp").prop('format'), new Date(element_value));
       }
       if ((date_fields == "minDate" && jQuery("#default_date_start").val() == "") || (date_fields == "maxDate" && jQuery("#default_date_end").val() == "")) {
         jQuery("#" + id_int + "_elementform_id_temp0").datepicker('option', date_fields, element_value);
@@ -11065,13 +11064,13 @@ function change_hidden_input_value_range(element_value, date_fields, start_end, 
         }
       });
 
-      var w_hide_sunday = jQuery("#" + id_int + "_show_week_days").attr('sunday') == 'yes' ? 'true' : 'day != 0';
-      var w_hide_monday = jQuery("#" + id_int + "_show_week_days").attr('monday') == 'yes' ? 'true' : 'day != 1';
-      var w_hide_tuesday = jQuery("#" + id_int + "_show_week_days").attr('tuesday') == 'yes' ? 'true' : 'day != 2';
-      var w_hide_wednesday = jQuery("#" + id_int + "_show_week_days").attr('wednesday') == 'yes' ? 'true' : 'day != 3';
-      var w_hide_thursday = jQuery("#" + id_int + "_show_week_days").attr('thursday') == 'yes' ? 'true' : 'day != 4';
-      var w_hide_friday = jQuery("#" + id_int + "_show_week_days").attr('friday') == 'yes' ? 'true' : 'day != 5';
-      var w_hide_saturday = jQuery("#" + id_int + "_show_week_days").attr('saturday') == 'yes' ? 'true' : 'day != 6';
+      var w_hide_sunday = jQuery("#" + id_int + "_show_week_days").prop('sunday') == 'yes' ? 'true' : 'day != 0';
+      var w_hide_monday = jQuery("#" + id_int + "_show_week_days").prop('monday') == 'yes' ? 'true' : 'day != 1';
+      var w_hide_tuesday = jQuery("#" + id_int + "_show_week_days").prop('tuesday') == 'yes' ? 'true' : 'day != 2';
+      var w_hide_wednesday = jQuery("#" + id_int + "_show_week_days").prop('wednesday') == 'yes' ? 'true' : 'day != 3';
+      var w_hide_thursday = jQuery("#" + id_int + "_show_week_days").prop('thursday') == 'yes' ? 'true' : 'day != 4';
+      var w_hide_friday = jQuery("#" + id_int + "_show_week_days").prop('friday') == 'yes' ? 'true' : 'day != 5';
+      var w_hide_saturday = jQuery("#" + id_int + "_show_week_days").prop('saturday') == 'yes' ? 'true' : 'day != 6';
       var day = date.getDay();
       var string_days = jQuery.datepicker.formatDate("mm/dd/yy", date);
       return [invalid_dates_finish.indexOf(string_days) == -1 && eval(w_hide_sunday) && eval(w_hide_monday) && eval(w_hide_tuesday) && eval(w_hide_wednesday) && eval(w_hide_thursday) && eval(w_hide_friday) && eval(w_hide_saturday)];
@@ -12012,7 +12011,7 @@ function type_scale_rating(i, w_field_label, w_field_label_size, w_field_label_p
   change_class(w_class, i);
   refresh_attr(i, 'type_scale_rating');
 
-  jQuery(document).ready(function () {
+  jQuery(function () {
     jQuery("label#" + i + "_mini_label_worst").click(function () {
       if (jQuery(this).children('input').length == 0) {
         var worst = "<input type='text' class='worst' size='6' style='outline:none; border:none; background:none; font-size:11px;' value=\"" + jQuery(this).text() + "\">";
@@ -12564,7 +12563,7 @@ function type_range(i, w_field_label, w_field_label_size, w_field_label_pos, w_h
   /*spinner2.spinner("value", w_field_value2);*/
   jQuery("#" + i + "_elementform_id_temp1").spinner({step: w_field_range_step});
 
-  jQuery(document).ready(function () {
+  jQuery(function () {
     jQuery("label#" + i + "_mini_label_from").click(function () {
       if (jQuery(this).children('input').length == 0) {
         var form = "<input type='text' class='form' size='8' style='outline:none; border:none; background:none;' value=\"" + jQuery(this).text() + "\">";
@@ -13301,7 +13300,7 @@ function type_phone(i, w_field_label, w_field_label_size, w_field_label_pos, w_h
   change_class(w_class, i);
   refresh_attr(i, 'type_name');
 
-  jQuery(document).ready(function () {
+  jQuery(function () {
     jQuery("label#" + i + "_mini_label_area_code").click(function () {
       if (jQuery(this).children('input').length == 0) {
         var area_code = "<input type='text' class='area_code' size='10' style='outline:none; border:none; background:none;' value=\"" + jQuery(this).text() + "\">";
@@ -13564,7 +13563,7 @@ function add_button(i) {
   var buttons = jQuery('#buttons');
   var last_child = buttons.children().last();
   if (last_child.length > 0) {
-    j = parseInt(last_child.attr("idi")) + 1;
+    j = parseInt(last_child.prop("idi")) + 1;
   }
   else {
     j = 0;
@@ -14559,7 +14558,7 @@ function create_page_titles() {
     var page_body = jQuery('#form_id_tempform_view' + j);
     if (page_body.length > 0) {
       var page = jQuery('<div class="fm-width-100"></div>');
-      var title = page_body.attr('page_title');
+      var title = page_body.prop('page_title');
       if (typeof title == undefined) {
         title = 'Untitled Page';
       }
@@ -14684,7 +14683,7 @@ function refresh_page_numbers() {
   var pages = jQuery('.wdform-page-and-images');
   var show_numbers = document.getElementById('pages').getAttribute('show_numbers') == 'true';
   pages.each(function(index){
-    var id = jQuery(this).find('.form_id_tempform_view_img').attr('id').split("form_id_tempform_view_img");
+    var id = jQuery(this).find('.form_id_tempform_view_img').prop('id').split("form_id_tempform_view_img");
     j = id[1];
     if (document.getElementById('page_numbersform_id_temp' + j)) {
       document.getElementById("page_numbersform_id_temp" + j).innerHTML = '';
@@ -15679,6 +15678,7 @@ function gen_form_fields() {
       form_fields += w_field_label + "*:*w_field_label*:*";
       form_fields += w_field_label_size + "*:*w_field_label_size*:*";
       form_fields += w_field_label_pos + "*:*w_field_label_pos*:*";
+      form_fields += w_hide_label + "*:*w_hide_label*:*";
       form_fields += w_field_label_col + "*:*w_field_label_col*:*";
       form_fields += w_star_amount + "*:*w_star_amount*:*";
       form_fields += w_required + "*:*w_required*:*";
@@ -16139,8 +16139,8 @@ function gen_form_fields() {
         w_choices[tt] = jQuery(this).html();
         w_choices_value[tt] = jQuery(this).val();
         w_choices_checked[tt] = jQuery(this)[0].selected;
-        if (jQuery(this).attr('where'))
-          w_choices_params[tt] = jQuery(this).attr('where') + '[where_order_by]' + jQuery(this).attr('order_by') + '[db_info]' + jQuery(this).attr('db_info');
+        if (jQuery(this).prop('where'))
+          w_choices_params[tt] = jQuery(this).prop('where') + '[where_order_by]' + jQuery(this).prop('order_by') + '[db_info]' + jQuery(this).prop('db_info');
         else
           w_choices_params[tt] = '';
 
@@ -16185,8 +16185,8 @@ function gen_form_fields() {
         w_choices[tt] = jQuery(this).html();
         w_choices_price[tt] = jQuery(this).val();
         w_choices_checked[tt] = jQuery(this)[0].selected;
-        if (jQuery(this).attr('where'))
-          w_choices_params[tt] = jQuery(this).attr('where') + '[where_order_by]' + jQuery(this).attr('order_by') + '[db_info]' + jQuery(this).attr('db_info');
+        if (jQuery(this).prop('where'))
+          w_choices_params[tt] = jQuery(this).prop('where') + '[where_order_by]' + jQuery(this).prop('order_by') + '[db_info]' + jQuery(this).prop('db_info');
         else
           w_choices_params[tt] = '';
 

@@ -45,7 +45,7 @@ class TenWebNewLibDeactivate {
     $wd_options = $this->config;
     ?>
     <script>
-      jQuery(document).ready(function () {
+      jQuery(function () {
         tenwebReady("<?php echo $wd_options->prefix; ?>");
       });
     </script>

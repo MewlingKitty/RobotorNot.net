@@ -97,7 +97,7 @@ class FMViewFromeditcountryinpopup extends FMAdminView {
         document.getElementById('countries_list').appendChild(li);
         j++;
       }
-      jQuery(document).ready(function () {
+      jQuery(function () {
         jQuery("#countries_list").sortable();
         jQuery("#countries_list").disableSelection();
       });

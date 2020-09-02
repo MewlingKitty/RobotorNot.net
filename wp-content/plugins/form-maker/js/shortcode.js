@@ -4,7 +4,7 @@ jQuery(window).resize(function() {
   });
 });
 
-jQuery(document).ready(function () {
+jQuery(function () {
   var short_code = get_params("Form");
   var form = jQuery("select[name='form_maker_id']");
 

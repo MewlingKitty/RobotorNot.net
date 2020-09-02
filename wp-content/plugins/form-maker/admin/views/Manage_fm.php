@@ -334,8 +334,9 @@ class FMViewManage_fm extends FMAdminView {
               <button class="button button-large button_revisions" href="#" onclick="fm_popup_toggle('fm_revision_popup_container'); return false;"><?php _e('Revisions', WDFMInstance(self::PLUGIN)->prefix); ?></button>
               <?php
             }
+            /* onclick function might seem strange, but it is required to submit the form when there is an html validation error to display error messages and avoid form corruption */
             ?>
-            <button class="button button-primary button-large" onclick="if (fm_check_required('title', '<?php _e('Form Title', WDFMInstance(self::PLUGIN)->prefix); ?>') || !wd_fm_apply_options() || <?php echo ( ( isset($fm_settings['fm_advanced_layout']) && $fm_settings['fm_advanced_layout'] ) ? '!fm_apply_advanced_layout() ||' : '' );?> !FormManageSubmitButton()) { return false;}; fm_set_input_value('task', 'apply');">
+            <button class="button button-primary button-large" onclick="if ( !jQuery('#manage_form')[0].checkValidity() ) return true; if (fm_check_required('title', '<?php _e('Form Title', WDFMInstance(self::PLUGIN)->prefix); ?>') || !wd_fm_apply_options() || <?php echo ( ( isset($fm_settings['fm_advanced_layout']) && $fm_settings['fm_advanced_layout'] ) ? '!fm_apply_advanced_layout() ||' : '' );?> !FormManageSubmitButton()) { return false;}; fm_set_input_value('task', 'apply');">
               <?php
               if ( $row->title && isset($params['revisions_total']) && !$params['revisions_status'] ) {
                 _e('Update', WDFMInstance(self::PLUGIN)->prefix);
@@ -658,7 +659,7 @@ class FMViewManage_fm extends FMAdminView {
 
 			default_theme  = '<?php echo $default_theme; ?>';
 			theme_edit_url = '<?php echo add_query_arg( array('page' => 'themes' . WDFMInstance(self::PLUGIN)->menu_postfix, 'task' =>'edit'), $page_url); ?>';
-			jQuery(document).ready(function () {
+			jQuery(function () {
 				set_theme();
         jQuery( function() {
           jQuery( "#fm-tabs" ).tabs({
@@ -1879,7 +1880,7 @@ class FMViewManage_fm extends FMAdminView {
                                       else {
                                         $w_choice = $w_choices_value_array[$m];
                                       }
-                                      if ( in_array(esc_html($w_choice), $multiselect) ) {
+                                      if ( in_array($w_choice, $multiselect) ) {
                                         $selected = 'selected="selected"';
                                       }
                                       else {
@@ -2072,7 +2073,7 @@ class FMViewManage_fm extends FMAdminView {
 			payment_method = '<?php echo $payment_method; ?>';
 			theme_edit_url = '<?php echo add_query_arg( array('page' => 'themes' . WDFMInstance(self::PLUGIN)->menu_postfix, 'task' =>'edit'), $page_url); ?>';
 			
-			jQuery(document).ready( function () {
+			jQuery(function () {
 				set_theme();
 			});
 		</script>

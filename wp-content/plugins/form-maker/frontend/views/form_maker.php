@@ -1112,7 +1112,7 @@ class FMViewForm_maker {
               $param['label'] = $param['w_verification_label'];
               $param['id'] = 'wdform_' . $id1 . '_1_element' . $form_id;
 
-              $html = '<input type="text" class="wd-width-100" id="wdform_' . $id1 . '_1_element' . $form_id . '" name="wdform_' . $id1 . '_1_element' . $form_id . '" placeholder="' . $param['w_verification_placeholder'] . '" title="' . $param['w_verification_placeholder'] . '"  ' . $param['attributes'] . 'onchange="wd_check_confirmation_email(\'' . $id1 . '\', \'' . $form_id . '\', \'' . $message_confirm . '\')" />';
+              $html = '<input type="text" class="wd-width-100" id="wdform_' . $id1 . '_1_element' . $form_id . '" name="wdform_' . $id1 . '_1_element' . $form_id . '" placeholder="' . $param['w_verification_placeholder'] . '" title="' . $param['w_verification_placeholder'] . '"  ' . $param['attributes'] . ' onchange="wd_check_confirmation_email(\'' . $id1 . '\', \'' . $form_id . '\', \'' . $message_confirm . '\')" />';
 
               // Generate field.
               $rep .= $this->wdform_field($type, $param, $row, $html);
@@ -1778,11 +1778,12 @@ class FMViewForm_maker {
       }
     }
     else {
-      wp_register_script(WDFMInstance(self::PLUGIN)->handle_prefix . '-script-' . $form_id, $fm_script_url, array(), $jsversion);
       if ( WDW_FM_Library(self::PLUGIN)->elementor_is_active() ) {
+        wp_register_script(WDFMInstance(self::PLUGIN)->handle_prefix . '-script-' . $form_id, $fm_script_url, array(), $jsversion);
         wp_print_scripts(WDFMInstance(self::PLUGIN)->handle_prefix . '-script-' . $form_id);
       }
       else {
+        wp_register_script(WDFMInstance(self::PLUGIN)->handle_prefix . '-script-' . $form_id, $fm_script_url, array( 'fm-frontend' ), $jsversion);
         wp_enqueue_script(WDFMInstance(self::PLUGIN)->handle_prefix . '-script-' . $form_id);
       }
     }
@@ -2058,7 +2059,7 @@ class FMViewForm_maker {
       }
     }
     if ( $onload_js ) {
-      $onload_js = 'jQuery(document).ready( function () {' . $onload_js . '})';
+      $onload_js = 'jQuery(function () {' . $onload_js . '})';
     }
     if ( function_exists('wp_add_inline_script') ) { // Since Wordpress 4.5.0
       wp_add_inline_script( WDFMInstance(self::PLUGIN)->handle_prefix . '-script-' . $id, $onload_js);

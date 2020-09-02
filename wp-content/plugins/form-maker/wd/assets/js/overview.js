@@ -1,7 +1,7 @@
 jQuery(window).resize(function () {
   tenWebOverviewResize();
 });
-jQuery(document).ready(function () {
+jQuery(function () {
   tenWebOverviewResize();
 });
 

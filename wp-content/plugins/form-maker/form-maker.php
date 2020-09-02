@@ -3,7 +3,7 @@
  * Plugin Name: Form Maker
  * Plugin URI: https://10web.io/plugins/wordpress-form-maker/?utm_source=form_maker&utm_medium=free_plugin
  * Description: This plugin is a modern and advanced tool for easy and fast creating of a WordPress Form. The backend interface is intuitive and user friendly which allows users far from scripting and programming to create WordPress Forms.
- * Version: 1.13.40
+ * Version: 1.13.41
  * Author: 10Web Form Builder Team
  * Author URI: https://10web.io/plugins/?utm_source=form_maker&utm_medium=free_plugin
  * License: GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -98,8 +98,8 @@ final class WDFM {
     $this->plugin_url = plugins_url(plugin_basename(dirname(__FILE__)));
     $this->front_urls = $this->get_front_urls();
     $this->main_file = plugin_basename(__FILE__);
-    $this->plugin_version = '1.13.40';
-    $this->db_version = '2.13.40';
+    $this->plugin_version = '1.13.41';
+    $this->db_version = '2.13.41';
     $this->menu_postfix = ($this->is_free == 2 ? '_fmc' : '_fm');
     $this->plugin_postfix = ($this->is_free == 2 ? '_fmc' : '');
     $this->menu_slug = 'manage' . $this->menu_postfix;
@@ -125,15 +125,15 @@ final class WDFM {
     if ( empty($this->fm_settings['fm_block_ip_exceeded_limit']) ) {
       $this->fm_settings['fm_block_ip_exceeded_limit'] = 0;
     }
-	  if ( empty($this->fm_settings['fm_developer_mode']) ) {
-      $this->fm_settings['fm_developer_mode'] = 0;
-    }
-	  if ( empty($this->fm_settings['fm_file_read']) ) {
-      $this->fm_settings['fm_file_read'] = 0;
-    }
-	  if ( empty($this->fm_settings['fm_ajax_submit']) ) {
-      $this->fm_settings['fm_ajax_submit'] = 0;
-    }
+    if ( empty($this->fm_settings['fm_developer_mode']) ) {
+        $this->fm_settings['fm_developer_mode'] = 0;
+      }
+    if ( empty($this->fm_settings['fm_file_read']) ) {
+        $this->fm_settings['fm_file_read'] = 0;
+      }
+    if ( empty($this->fm_settings['fm_ajax_submit']) ) {
+        $this->fm_settings['fm_ajax_submit'] = 0;
+      }
   }
 
   /**
@@ -1555,7 +1555,7 @@ final class WDFM {
    * @param $add_ons_notice
    */
   function fm_addons_compatibility_notice($add_ons_notice) {
-    $addon_names = implode($add_ons_notice, ', ');
+    $addon_names = implode(', ', $add_ons_notice);
     $count = count($add_ons_notice);
     $single = __('The current version of %s extension is not compatible with Form Maker. Some functions may not work correctly. Please update the extension to fully use its features.', $this->prefix);
     $plural = __('The current version of %s extensions are not compatible with Form Maker. Some functions may not work correctly. Please update the extensions to fully use its features.', $this->prefix);

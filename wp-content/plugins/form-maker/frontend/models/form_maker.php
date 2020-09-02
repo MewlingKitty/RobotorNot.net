@@ -3367,7 +3367,7 @@ class FMModelForm_maker {
     } else {
       $content_type = "text/plain";
       $list_user = wordwrap( $list_text_mode, 1000, "\n", TRUE );
-      $new_script = str_replace( array( '<p>', '</p>' ), '', $row->script_mail_user );
+      $new_script = $row->script_mail_user;
     }
     foreach ( $label_order_original as $key => $label_each ) {
       $type = $label_type[ $key ];
@@ -3472,6 +3472,9 @@ class FMModelForm_maker {
           }
 
           $recipient = WDW_FM_Library(self::PLUGIN)->get( 'wdform_' . $send_to . "_element" . $id, NULL, 'esc_html' );
+          if ( !$row->mail_mode_user ) {
+            $body = strip_tags($body);
+          }
           if ($recipient) {
             if ($row->mail_attachment_user) {
               $remove_parrent_array_user = new RecursiveIteratorIterator(new RecursiveArrayIterator($attachment_user));
@@ -3524,7 +3527,7 @@ class FMModelForm_maker {
         $content_type = "text/plain";
         $list = $list_text_mode;
         $list = wordwrap( $list, 1000, "\n", TRUE );
-        $new_script = str_replace( array( '<p>', '</p>' ), '', $row->script_mail );
+        $new_script = $row->script_mail;
       }
 
       $header_arr = array();
@@ -3601,6 +3604,9 @@ class FMModelForm_maker {
       // Replace pdf link in email body.
       $admin_body = str_replace( '{PDF(link)}', site_url($pdf_data['pdf_url']), $admin_body );
 
+      if ( !$row->mail_mode ) {
+        $admin_body = strip_tags($admin_body);
+      }
       if ( $row->sendemail ) {
         $send = WDW_FM_Library(self::PLUGIN)->mail($recipient, $subject, $admin_body, $header_arr, $attachment, $save_uploads);
       }
@@ -3691,8 +3697,12 @@ class FMModelForm_maker {
     }
     else {
       $_SESSION[ 'redirect_paypal' . $id ] = 1;
-      $str .= "&return=" . urlencode( $redirect_url );
-      wp_redirect( $str );
+      if ( $this->fm_ajax_submit ) {
+          echo json_encode(array('paypal_url'=>$str));
+      } else {
+          $str .= "&return=" . urlencode( $redirect_url );
+          wp_redirect( $str );
+      }
       exit;
     }
   }

@@ -3727,7 +3727,6 @@ class FMModelManage_fm extends FMAdminModel {
   public function insert_data_to_db( $table = '', $data = array() ) {
     global $wpdb;
     $query = $wpdb->insert($wpdb->prefix . $table, $data);
-    $wpdb->show_errors();
 
     return $query;
   }

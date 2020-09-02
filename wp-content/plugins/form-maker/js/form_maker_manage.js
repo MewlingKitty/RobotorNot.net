@@ -96,7 +96,7 @@ function sortable_columns() {
 function all_sortable_events() {
   fm_rows_refresh();
   fm_columns_refresh();
-  jQuery(".wdform_row, .wdform_tr_section_break").off("hover, touchstart").on("hover, touchstart", function (event) {
+  jQuery(".wdform_row, .wdform_tr_section_break").off("hover mouseover touchstart").on("hover mouseover touchstart", function (event) {
     if (!jQuery(this).find('.wdform_arrows').is(':visible')) {
       jQuery('.wdform_arrows').hide();
       jQuery(this).find('.wdform_arrows').show();
@@ -106,7 +106,7 @@ function all_sortable_events() {
   }).off("mouseleave").on("mouseleave", function () {
     jQuery(this).find('.wdform_arrows').hide();
   });
-  jQuery(".wdform_section_handle, .wdform_row_handle").off("hover, touchstart").on("hover, touchstart", function (event) {
+  jQuery(".wdform_section_handle, .wdform_row_handle").off("hover mouseover touchstart").on("hover mouseover touchstart", function (event) {
     jQuery(this).parent().addClass('fm-hover');
   }).off("mouseleave").on("mouseleave", function () {
     jQuery(this).parent().removeClass('fm-hover');

@@ -12,7 +12,7 @@ $menu_slug = WDFMInstance(1)->menu_slug; // Current plugin slug.
 $title_text = __( "Hey! I know how hard and time-consuming creating a well-structured form can be.", $prefix ); // Message Box text.
 ?>
 <script>
-    jQuery(document).on("ready", function () {
+    jQuery(function () {
         jQuery("#tenweb_subscribe_submit").on("click", function () {
             var error = 0;
             var inputs = {

@@ -846,7 +846,7 @@ function after_submit() {
     $payment_currency = WDW_FM_Library(self::PLUGIN)->get('payment_currency', '');
     $paypal_email = WDW_FM_Library(self::PLUGIN)->get('paypal_email', '');
     $checkout_mode = WDW_FM_Library(self::PLUGIN)->get('checkout_mode', 'testmode');
-    $paypal_mode = WDW_FM_Library(self::PLUGIN)->get('paypal_mode', 0);
+    $paypal_mode = WDW_FM_Library(self::PLUGIN)->get('paypal_mode', 0, 'parseInt');
 
     // TODO Seclude payment method and payment status.
     if ( $paypal_mode == 'paypal' ) {
@@ -885,7 +885,6 @@ function after_submit() {
 
     $privacy = json_encode($privacy_arr);
 
-
     $data = array(
       'published' => $published,
       'savedb' => $savedb,
@@ -909,7 +908,6 @@ function after_submit() {
       'frontend_submit_stat_fields' => $frontend_submit_stat_fields,
       'privacy' => $privacy,
     );
-
 	  $message_id = 2;
     $save = $this->model->update_data('formmaker', $data, array( 'id' => $id ));
     if ( $save !== FALSE ) {
@@ -1134,17 +1132,6 @@ function after_submit() {
     else {
       return 2;
     }
-  }
-
-  // TODO: remove this function.
-  public function save_as_copy() {
-    $message = $this->save_db_as_copy();
-    $page = WDW_FM_Library(self::PLUGIN)->get('page');
-    WDW_FM_Library(self::PLUGIN)->fm_redirect(add_query_arg(array(
-                                                'page' => $page,
-                                                'task' => 'display',
-                                                'message' => $message,
-                                              ), admin_url('admin.php')));
   }
 
   public function save() {
@@ -1410,7 +1397,7 @@ function after_submit() {
     }
     $this->model->update_data('formmaker_backup', array( 'cur' => 0 ), array( 'id' => $id ));
     $fm_cur_date = current_time('timestamp');
-    $save = $this->model->insert_data_to_db('formmaker_backup', array(
+    $message_id = $this->model->insert_data_to_db('formmaker_backup', array(
       'cur' => 1,
       'id' => $id,
       'title' => $title,
@@ -1478,7 +1465,7 @@ function after_submit() {
       'date' => $fm_cur_date,
     ));
 
-    if ( $save !== FALSE ) {
+    if ( $message_id !== FALSE ) {
       $this->model->create_js($id);	 
       return 1;
     }

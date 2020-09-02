@@ -43,7 +43,7 @@ function fm_rows_refresh() {
   sortable_columns();
 }
 
-jQuery( document ).ready(function() {
+jQuery(function() {
   all_sortable_events();
 	if( is_sortable == 1) {
 		jQuery( ".wdform_arrows_advanced" ).hide();
@@ -380,7 +380,7 @@ function formOnload(rows) {
 			}
 			else if (document.getElementById(t + "_typeform_id_temp").value == "type_name") {
 				var myu = t;
-				jQuery(document).ready(function () {
+				jQuery(function () {
 					jQuery("#" + myu + "_mini_label_first").on("click", function () {
 						if (jQuery(this).children('input').length == 0) {
 							var first = "<input type='text' id='first' class='first' style='outline:none; border:none; background:none;' value=\"" + jQuery(this).text() + "\">";
@@ -433,7 +433,7 @@ function formOnload(rows) {
 			}
 			else if (document.getElementById(t + "_typeform_id_temp").value == "type_phone") {
 				var myu = t;
-				jQuery(document).ready(function () {
+				jQuery(function () {
 					jQuery("label#" + myu + "_mini_label_area_code").click(function () {
 						if (jQuery(this).children('input').length == 0) {
 							var area_code = "<input type='text' id='area_code' class='area_code' size='10' style='outline:none; border:none; background:none;' value=\"" + jQuery(this).text() + "\">";
@@ -462,7 +462,7 @@ function formOnload(rows) {
 			}
 			else if (document.getElementById(t + "_typeform_id_temp").value == "type_date_fields") {
 				var myu = t;
-				jQuery(document).ready(function () {
+				jQuery(function () {
 					jQuery("label#" + myu + "_day_label").click(function () {
 						if (jQuery(this).children('input').length == 0) {
 							var day = "<input type='text' id='day' class='day' size='8' style='outline:none; border:none; background:none;' value=\"" + jQuery(this).text() + "\">";
@@ -503,7 +503,7 @@ function formOnload(rows) {
 			}
 			else if (document.getElementById(t + "_typeform_id_temp").value == "type_time") {
 				var myu = t;
-				jQuery(document).ready(function () {
+				jQuery(function () {
 					jQuery("label#" + myu + "_mini_label_hh").click(function () {
 						if (jQuery(this).children('input').length == 0) {
 							var hh = "<input type='text' id='hh' class='hh' size='4' style='outline:none; border:none; background:none;' value=\"" + jQuery(this).text() + "\">";
@@ -556,7 +556,7 @@ function formOnload(rows) {
 			}
 			else if (document.getElementById(t + "_typeform_id_temp").value == "type_paypal_price") {
 				var myu = t;
-				jQuery(document).ready(function () {
+				jQuery(function () {
 					jQuery("#" + myu + "_mini_label_dollars").click(function () {
 						if (jQuery(this).children('input').length == 0) {
 							var dollars = "<input type='text' id='dollars' class='dollars' style='outline:none; border:none; background:none;' value=\"" + jQuery(this).text() + "\">";
@@ -585,7 +585,7 @@ function formOnload(rows) {
 			}
 			else if (document.getElementById(t + "_typeform_id_temp").value == "type_address") {
 				var myu = t;
-				jQuery(document).ready(function () {
+				jQuery(function () {
 					jQuery("label#" + myu + "_mini_label_street1").click(function () {
 						if (jQuery(this).children('input').length == 0) {
 							var street1 = "<input type='text' id='street1' class='street1' style='outline:none; border:none; background:none;' value=\"" + jQuery(this).text() + "\">";
@@ -662,7 +662,7 @@ function formOnload(rows) {
 			}
 			else if (document.getElementById(t + "_typeform_id_temp").value == "type_scale_rating") {
 				var myu = t;
-				jQuery(document).ready(function () {
+				jQuery(function () {
 					jQuery("#" + myu + "_mini_label_worst").click(function () {
 						if (jQuery(this).children('input').length == 0) {
 							var worst = "<input type='text' id='worst' class='worst' size='6' style='outline:none; border:none; background:none; font-size:11px;' value=\"" + jQuery(this).text() + "\">";
@@ -740,7 +740,7 @@ function formOnload(rows) {
         }
 				jQuery("#" + t + "_elementform_id_temp1").spinner({ step:spinner_step});
 				var myu = t;
-				jQuery(document).ready(function () {
+				jQuery(function () {
 					jQuery("#" + myu + "_mini_label_from").click(function () {
 						if (jQuery(this).children('input').length == 0) {
 							var from = "<input type='text' id='from' class='from' size='6' style='outline:none; border:none; background:none; font-size:11px;' value=\"" + jQuery(this).text() + "\">";

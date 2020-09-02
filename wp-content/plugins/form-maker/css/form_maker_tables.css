@@ -1,3 +1,7 @@
+#fm-form-admin .description,
+.fm-option-container .description {
+	font-style:italic;
+}
 .fm-remove_before:before {
     content: "" !important;
 }
@@ -371,6 +375,14 @@
 
 .add-popup .postbox .handlediv {
   margin: 0;
+}
+
+.postbox .handlediv {
+	float:right;
+}
+
+.postbox .hndle, .stuffbox .hndle {
+    border-bottom: 1px solid #ccd0d4;
 }
 
 .js .postbox .hndle {
@@ -1268,6 +1280,9 @@ fieldset.adminform {
   margin: 10px 0;
 }
 
+.adminform .description{
+	font-style:italic;
+}
 fieldset.adminform legend {
   color: #444;
   font-weight: bold;

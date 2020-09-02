@@ -1,4 +1,4 @@
-jQuery(document).on("ready", function () {
+jQuery(function () {
   jQuery(".permissions").on("click", function () {
     jQuery(this).toggleClass("active");
     jQuery(".list").slideToggle("fast");

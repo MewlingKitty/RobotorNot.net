@@ -970,7 +970,7 @@ class WDW_FM_Library {
    */
   public static function display_options( $id ) {
     global $wpdb;
-    $row = $wpdb->get_row('SELECT * FROM ' . $wpdb->prefix . 'formmaker_display_options as display WHERE form_id = ' . (int) $id);
+    $row = $wpdb->get_row($wpdb->prepare('SELECT * FROM ' . $wpdb->prefix . 'formmaker_display_options as display WHERE form_id=%d', $id));
     if ( !$row ) {
       $row = new stdClass();
       $row->form_id = $id;
@@ -4178,7 +4178,7 @@ class WDW_FM_Library {
         ajax_similarity<?php echo $form_id ?>( ajaxObj<?php echo $form_id ?>, update_first_field_id<?php echo $form_id; ?> );
       }
 	  }
-    jQuery(document).ready(function () {
+    jQuery(function () {
       fm_script_ready<?php echo $form_id ?>();
     });
     <?php
@@ -4317,7 +4317,7 @@ class WDW_FM_Library {
     $wpdb->query("SET SESSION group_concat_max_len = 1000000");
     $rows = array();
     if ( !empty($groupids) ) {
-		$query = $wpdb->prepare("SELECT `group_id`, `ip`, `date`, `user_id_wd`, GROUP_CONCAT( element_label SEPARATOR ',') AS `element_label`, GROUP_CONCAT( element_value SEPARATOR '*:*el_value*:*') AS `element_value` FROM " . $wpdb->prefix . "formmaker_submits WHERE `form_id` = %d and `group_id` IN(" . implode($groupids,',') . ") GROUP BY `group_id` ORDER BY `date` ASC", $form_id);
+		$query = $wpdb->prepare("SELECT `group_id`, `ip`, `date`, `user_id_wd`, GROUP_CONCAT( element_label SEPARATOR ',') AS `element_label`, GROUP_CONCAT( element_value SEPARATOR '*:*el_value*:*') AS `element_value` FROM " . $wpdb->prefix . "formmaker_submits WHERE `form_id` = %d and `group_id` IN(" . implode(',', $groupids) . ") GROUP BY `group_id` ORDER BY `date` ASC", $form_id);
 		$rows = $wpdb->get_results($query, OBJECT_K);
     }
     $data = array();
@@ -4887,7 +4887,7 @@ class WDW_FM_Library {
    * @return string
    */
   public static function localize_ui_datepicker() {
-    return 'jQuery(document).ready(function(jQuery){
+    return 'jQuery(function(jQuery){
       jQuery.datepicker.setDefaults( {
         "closeText":"' . __('Done', WDFMInstance(self::PLUGIN)->prefix) . '",
         "prevText":"' . __('Prev', WDFMInstance(self::PLUGIN)->prefix) . '",
@@ -5117,24 +5117,24 @@ class WDW_FM_Library {
     $lists['useremail_search'] = self::get( 'useremail_search' );
     $lists['id_search'] = self::get( 'id_search' );
     if ( $lists['ip_search'] ) {
-      $where[] = 'ip LIKE "%' . $lists['ip_search'] . '%"';
+      $where[] = $wpdb->prepare('ip LIKE "%%' . '%s' . '%%"', $lists['ip_search']);
     }
     if ( $lists['startdate'] != '' ) {
-      $where[] = " `date`>='" . $lists['startdate'] . " 00:00:00' ";
+      $where[] = $wpdb->prepare(" `date`>='" . '%s' . " 00:00:00' ",$lists['startdate']);
     }
     if ( $lists['enddate'] != '' ) {
-      $where[] = " `date`<='" . $lists['enddate'] . " 23:59:59' ";
+      $where[] = $wpdb->prepare(" `date`<='" . '%s' . " 23:59:59' ", $lists['enddate']);
     }
     if ( $lists['username_search'] ) {
-      $where[] = 'user_id_wd IN (SELECT ID FROM ' . $wpdb->prefix . 'users WHERE display_name LIKE "%' . $lists['username_search'] . '%")';
+      $where[] = $wpdb->prepare('user_id_wd IN (SELECT ID FROM ' . $wpdb->prefix . 'users WHERE display_name LIKE "%%' . '%s' . '%%")', $lists['username_search']);
     }
     if ( $lists['useremail_search'] ) {
-      $where[] = 'user_id_wd IN (SELECT ID FROM ' . $wpdb->prefix . 'users WHERE user_email LIKE "%' . $lists['useremail_search'] . '%")';
+      $where[] = $wpdb->prepare('user_id_wd IN (SELECT ID FROM ' . $wpdb->prefix . 'users WHERE user_email LIKE "%%' . '%s' . '%%")', $lists['useremail_search']);
     }
     if ( $lists['id_search'] ) {
-      $where[] = 'group_id =' . (int) $lists['id_search'];
+      $where[] = $wpdb->prepare('group_id =' . '%d', $lists['id_search']);
     }
-    $where[] = 'form_id=' . $form_id . '';
+    $where[] = $wpdb->prepare('form_id=' . '%d' . '', $form_id);
     $where = (count($where) ? ' ' . implode(' AND ', $where) : '');
     if ( $order_by == 'group_id' or $order_by == 'date' or $order_by == 'ip' ) {
       $orderby = ' ORDER BY ' . $order_by . ' ' . $asc_or_desc . '';
@@ -5149,7 +5149,7 @@ class WDW_FM_Library {
       for ( $i = 0; $i < 9; $i++ ) {
         array_pop($labels_parameters);
       }
-      $query = "SELECT distinct element_label FROM " . $wpdb->prefix . "formmaker_submits WHERE " . $where;
+      $query = $wpdb->prepare("SELECT distinct element_label FROM " . $wpdb->prefix . "formmaker_submits WHERE " . '%s', $where);
       $results = $wpdb->get_results($query);
       for ( $i = 0; $i < count($results); $i++ ) {
         array_push($labels, $results[$i]->element_label);
@@ -5220,45 +5220,45 @@ class WDW_FM_Library {
       }
       switch ( count($join_query) ) {
         case 0:
-          $join = 'SELECT distinct group_id FROM ' . $wpdb->prefix . 'formmaker_submits WHERE ' . $where;
+          $join = $wpdb->prepare('SELECT distinct group_id FROM ' . $wpdb->prefix . 'formmaker_submits WHERE ' . '%s', $where);
           break;
         case 1:
           if ( $join_query[0] == 'sort' ) {
-            $join = 'SELECT group_id FROM ' . $wpdb->prefix . 'formmaker_submits WHERE ' . $where . ' AND element_label="' . $join_where[0]['label'] . '" ';
-            $join_count = 'SELECT count(group_id) FROM ' . $wpdb->prefix . 'formmaker_submits WHERE form_id="' . $form_id . '" AND element_label="' . $join_where[0]['label'] . '" ';
-            $orderby = ' ORDER BY `element_value` ' . $asc_or_desc;
+            $join = $wpdb->prepare('SELECT group_id FROM ' . $wpdb->prefix . 'formmaker_submits WHERE ' . '%s' . ' AND element_label="' . '%s' . '" ', $where, $join_where[0]['label']);
+            $join_count = $wpdb->prepare('SELECT count(group_id) FROM ' . $wpdb->prefix . 'formmaker_submits WHERE form_id="' . '%d' . '" AND element_label="' . '%s' . '" ', $form_id, $join_where[0]['label']);
+            $orderby = $wpdb->prepare(' ORDER BY `element_value` ' . '%s', $asc_or_desc);
           }
           else {
             if ( isset($join_where[0]['search']) ) {
-              $join = 'SELECT group_id FROM ' . $wpdb->prefix . 'formmaker_submits WHERE element_label="' . $join_where[0]['label'] . '" AND  (element_value LIKE "%' . $join_where[0]['search'] . '%" OR element_value LIKE "%' . str_replace(' ', '@@@', $join_where[0]['search']) . '%")  AND ' . $where;
+              $join = $wpdb->prepare('SELECT group_id FROM ' . $wpdb->prefix . 'formmaker_submits WHERE element_label="' . '%s' . '" AND  (element_value LIKE "%%' . '%s' . '%%" OR element_value LIKE "%%' . '%s' . '%%")  AND ' . '%s', $join_where[0]['label'], $join_where[0]['search'], str_replace(' ', '@@@', $join_where[0]['search']), $where);
             }
             else {
-              $join = 'SELECT group_id FROM ' . $wpdb->prefix . 'formmaker_submits WHERE  ' . $ver_where . $where;
+              $join = $wpdb->prepare('SELECT group_id FROM ' . $wpdb->prefix . 'formmaker_submits WHERE  ' . $ver_where . '%s',$where);
             }
           }
           break;
         default:
           if ( !empty($join_verified) ) {
             if ( isset($join_where[0]['search']) ) {
-              $join = 'SELECT t.group_id from (SELECT t1.group_id from (SELECT ' . $cols . ' FROM ' . $wpdb->prefix . 'formmaker_submits WHERE (element_label="' . $join_where[0]['label'] . '" AND (element_value LIKE "%' . $join_where[0]['search'] . '%" OR element_value LIKE "%' . str_replace(' ', '@@@', $join_where[0]['search']) . '%")) AND ' . $where . ' ) as t1 JOIN (SELECT group_id FROM ' . $wpdb->prefix . 'formmaker_submits WHERE  ' . $ver_where . $where . ') as t2 ON t1.group_id = t2.group_id) as t ';
+              $join = $wpdb->prepare('SELECT t.group_id from (SELECT t1.group_id from (SELECT ' . $cols . ' FROM ' . $wpdb->prefix . 'formmaker_submits WHERE (element_label="' . '%s' . '" AND (element_value LIKE "%%' . '%s' . '%%" OR element_value LIKE "%%' .'%s' . '%%")) AND ' . '%s' . ' ) as t1 JOIN (SELECT group_id FROM ' . $wpdb->prefix . 'formmaker_submits WHERE  ' . $ver_where . '%s' . ') as t2 ON t1.group_id = t2.group_id) as t ',$join_where[0]['label'], $join_where[0]['search'], str_replace(' ', '@@@', $join_where[0]['search']), $where, $where);
             }
             else {
-              $join = 'SELECT t.group_id FROM (SELECT ' . $cols . '  FROM ' . $wpdb->prefix . 'formmaker_submits WHERE ' . $ver_where . $where . ') as t ';
+              $join = $wpdb->prepare('SELECT t.group_id FROM (SELECT ' . $cols . '  FROM ' . $wpdb->prefix . 'formmaker_submits WHERE ' . $ver_where . '%s' . ') as t ', $where);
             }
           }
           else {
-            $join = 'SELECT t.group_id FROM (SELECT ' . $cols . '  FROM ' . $wpdb->prefix . 'formmaker_submits WHERE ' . $where . ' AND element_label="' . $join_where[0]['label'] . '" AND  (element_value LIKE "%' . $join_where[0]['search'] . '%" OR element_value LIKE "%' . str_replace(' ', '@@@', $join_where[0]['search']) . '%" )) as t ';
+            $join = $wpdb->prepare('SELECT t.group_id FROM (SELECT ' . $cols . '  FROM ' . $wpdb->prefix . 'formmaker_submits WHERE ' . '%s' . ' AND element_label="' . '%s' . '" AND  (element_value LIKE "%%' . '%s' . '%%" OR element_value LIKE "%%' . '%s' . '%%" )) as t ', $where, $join_where[0]['label'], $join_where[0]['search'], str_replace(' ', '@@@', $join_where[0]['search']));
           }
           for ( $key = 1; $key < count($join_query); $key++ ) {
             if ( $join_query[$key] == 'sort' ) {
               if ( isset($join_where[$key]) ) {
-                $join .= 'LEFT JOIN (SELECT group_id as group_id' . $key . ', element_value   FROM ' . $wpdb->prefix . 'formmaker_submits WHERE ' . $where . ' AND element_label="' . $join_where[$key]['label'] . '") as t' . $key . ' ON t' . $key . '.group_id' . $key . '=t.group_id ';
-                $orderby = ' ORDER BY t' . $key . '.`element_value` ' . $asc_or_desc . '';
+                $join .= $wpdb->prepare('LEFT JOIN (SELECT group_id as group_id' . '%s' . ', element_value   FROM ' . $wpdb->prefix . 'formmaker_submits WHERE ' . '%s' . ' AND element_label="' . '%s' . '") as t' . '%s' . ' ON t' . '%s' . '.group_id' . '%s' . '=t.group_id ', $key, $where, $join_where[$key]['label'], $key, $key, $key);
+                $orderby = $wpdb->prepare(' ORDER BY t' . '%s' . '.`element_value` ' . '%s' . '', $key, $asc_or_desc);
               }
             }
             else {
               if ( isset($join_where[$key]) ) {
-                $join .= 'INNER JOIN (SELECT group_id as group_id' . $key . ' FROM ' . $wpdb->prefix . 'formmaker_submits WHERE ' . $where . ' AND element_label="' . $join_where[$key]['label'] . '" AND  (element_value LIKE "%' . $join_where[$key]['search'] . '%" OR element_value LIKE "%' . str_replace(' ', '@@@', $join_where[$key]['search']) . '%")) as t' . $key . ' ON t' . $key . '.group_id' . $key . '=t.group_id ';
+                $join .= $wpdb->prepare('INNER JOIN (SELECT group_id as group_id' . '%s' . ' FROM ' . $wpdb->prefix . 'formmaker_submits WHERE ' . '%s' . ' AND element_label="' . '%s' . '" AND  (element_value LIKE "%%' . $join_where[$key]['search'] . '%%" OR element_value LIKE "%%' . '%s' . '%%")) as t' . '%s' . ' ON t' . '%s' . '.group_id' . '%s' . '=t.group_id ', $key, $where, $join_where[$key]['label'], str_replace(' ', '@@@', $join_where[$key]['search']), $key, $key, $key);
               }
             }
           }
@@ -5291,7 +5291,7 @@ class WDW_FM_Library {
       $where2 = array();
       $where2[] = "group_id='0'";
       foreach ( $rows_ord as $rows_ordd ) {
-        $where2[] = "group_id='" . $rows_ordd . "'";
+        $where2[] = $wpdb->prepare( "group_id='%s'", $rows_ordd );
       }
       $where2 = (count($where2) ? ' WHERE ' . implode(' OR ', $where2) . '' : '');
       $query = 'SELECT * FROM ' . $wpdb->prefix . 'formmaker_submits ' . $where2;
@@ -5470,14 +5470,14 @@ class WDW_FM_Library {
   public static function get_user_submission_ids( $email_address ) {
     global $wpdb;
     $user = get_user_by( 'email', $email_address );
-    $query = 'SELECT DISTINCT submits.`form_id`, form.`title`, submits.`group_id` FROM ' . $wpdb->prefix . 'formmaker_submits as submits INNER JOIN ' . $wpdb->prefix . 'formmaker as form ON submits.form_id=form.id WHERE submits.`element_value`=\'' . $email_address . '\'' . ($user ? ' OR submits.`user_id_wd`=' . $user->ID : '') . (!WDFMInstance(self::PLUGIN)->is_free ? '' : ' AND submits.form_id' . (WDFMInstance(self::PLUGIN)->is_free == 1 ? ' NOT ' : ' ') . 'IN (' . (get_option( 'contact_form_forms', '' ) != '' ? get_option( 'contact_form_forms' ) : 0) . ')') . ' ORDER BY submits.`form_id`';
+    $query = $wpdb->prepare('SELECT DISTINCT submits.`form_id`, form.`title`, submits.`group_id` FROM ' . $wpdb->prefix . 'formmaker_submits as submits INNER JOIN ' . $wpdb->prefix . 'formmaker as form ON submits.form_id=form.id WHERE submits.`element_value`=\'' . '%s' . '\'' . ($user ? ' OR submits.`user_id_wd`=' . '%d' : '') . (!WDFMInstance(self::PLUGIN)->is_free ? '' : ' AND submits.form_id' . (WDFMInstance(self::PLUGIN)->is_free == 1 ? ' NOT ' : ' ') . 'IN (' . (get_option( 'contact_form_forms', '' ) != '' ? get_option( 'contact_form_forms' ) : 0) . ')') . ' ORDER BY submits.`form_id`',$email_address, $user->ID);
     $results = $wpdb->get_results($query);
     return $results;
   }
 
   public static function get_submission_by_id( $group_id ) {
     global $wpdb;
-    $query = 'SELECT * FROM ' . $wpdb->prefix . 'formmaker_submits WHERE `group_id`=' . (int) $group_id;
+    $query = $wpdb->prepare('SELECT * FROM ' . $wpdb->prefix . 'formmaker_submits WHERE `group_id`=' . '%d', $group_id);
     $results = $wpdb->get_results($query);
     return $results;
   }
@@ -5490,9 +5490,9 @@ class WDW_FM_Library {
       $ids[] = $id->group_id;
     }
     $ids = implode(',', $ids);
-    $query = 'DELETE FROM ' . $wpdb->prefix . 'formmaker_sessions WHERE group_id IN (' . $ids . ')';
+    $query = $wpdb->prepare('DELETE FROM ' . $wpdb->prefix . 'formmaker_sessions WHERE group_id IN (' . '%s' . ')', $ids);
     $deleted = $wpdb->query($query);
-    $query = 'DELETE FROM ' . $wpdb->prefix . 'formmaker_submits WHERE group_id IN (' . $ids . ')';
+    $query = $wpdb->prepare('DELETE FROM ' . $wpdb->prefix . 'formmaker_submits WHERE group_id IN (' . '%s' . ')', $ids);
     $deleted = $deleted || $wpdb->query($query);
     return $deleted;
   }
@@ -5672,7 +5672,7 @@ class WDW_FM_Library {
 
   public static function is_email( $email ) {
     if ( $email != '' ) {
-      if ( !preg_match('/^[a-zA-Z\x{0400}-\x{04FF}0-9.+_-]+@[a-zA-Z\x{0400}-\x{04FF}0-9.-]+\.[a-zA-Z\x{0400}-\x{04FF}]{2,61}$/u', $email) ) {
+      if ( !preg_match("/^[a-zA-Z'\x{0400}-\x{04FF}0-9.+_-]+@[a-zA-Z\x{0400}-\x{04FF}0-9.-]+\.[a-zA-Z\x{0400}-\x{04FF}]{2,61}$/u", $email) ) {
         return FALSE;
       }
     }

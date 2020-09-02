@@ -1,4 +1,4 @@
-jQuery("document").ready(function () {
+jQuery(function () {
     elementor.hooks.addAction( 'panel/open_editor/widget/fm-elementor', function( panel, model, view ) {
         var fm_el = jQuery('select[data-setting="form_id"]',window.parent.document);
         fm_add_edit_link(fm_el);

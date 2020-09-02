@@ -99,7 +99,7 @@ class FMViewFormMakerSQLMapping extends FMAdminView {
 	$cond .= '<img src="' . WDFMInstance(self::PLUGIN)->plugin_url . '/images/delete.png?ver=' . WDFMInstance(self::PLUGIN)->plugin_version . '" onclick="delete_cond(&quot;condid&quot;)" style="vertical-align: middle;"></div>';
     ?>
     <script>
-      jQuery(document).ready(function() {
+      jQuery(function() {
         // Add tooltip to elements with "wd-info" class.
         if ( typeof jQuery(document).tooltip != "undefined" ) {
           jQuery(document).tooltip({
@@ -150,7 +150,7 @@ class FMViewFormMakerSQLMapping extends FMAdminView {
         jQuery('#struct').html('<div class="fm-loading-container"><div class="fm-loading-content"></div></div>');
         jQuery("#struct").load('index.php?option=com_formmaker&task=db_tables&con_type=' + jQuery('input[name=con_type]:checked').val() + '&con_method=' + jQuery('input[name=con_method]:checked').val() + '&format=row');
       }
-      jQuery(document).ready(function () {
+      jQuery(function () {
         jQuery("#tables").change(function () {
           jQuery("#struct").removeClass("fm_loading");
           jQuery("#table_struct").load('index.php?option=com_formmaker&task=db_table_struct&name=' + jQuery(this).val() + '&con_type=' + jQuery('input[name=con_type]:checked').val() + '&con_method=' + jQuery('input[name=con_method]:checked').val() + '&host=' + jQuery('#host_rem').val() + '&port=' + jQuery('#port_rem').val() + '&username=' + jQuery('#username_rem').val() + '&password=' + encodeURIComponent( jQuery('#password_rem').val() ) + '&database=' + jQuery('#database_rem').val() + '&format=row&id=' + jQuery("#form_id").val());
@@ -1292,7 +1292,7 @@ class FMViewFormMakerSQLMapping extends FMAdminView {
 	$cond .= '<img src="' . WDFMInstance(self::PLUGIN)->plugin_url . '/images/delete.png?ver=' . WDFMInstance(self::PLUGIN)->plugin_version . '" onclick="delete_cond(&quot;condid&quot;)" style="vertical-align: middle;"></div>';
     ?>
     <script>
-      jQuery(document).ready(function() {
+      jQuery(function() {
         // Add tooltip to elements with "wd-info" class.
         if ( typeof jQuery(document).tooltip != "undefined" ) {
           jQuery(document).tooltip({

@@ -209,7 +209,7 @@ class FMControllerForm_maker {
       $fm_forms[$id] = $this->view->autoload_form( $params );
     }
 
-    return implode($fm_forms);
+    return implode('', $fm_forms);
   }
 
   public function fm_reload_input() {

@@ -477,9 +477,7 @@ function defense_hof( $atts , $content = null){
 		if($k % 6 == 0)
 			print "<tr>";
 			
-		//print "<td><table><tr><td><img src=\"{$topImage->url}\" width=\"100\" ></td></tr><tr><td>{$topImage->rating}</td></tr></table></td>";		
-		
-		print "<td><table><tr><td><img src=\"{$topImage->url}\" width=\"100\" ></td></tr></table></td>";		
+		print "<td><table><tr><td><img src=\"{$topImage->url}\" width=\"100\" ></td></tr><tr><td>{$topImage->rating}</td></tr></table></td>";		
 		
 		$k++;
 		

@@ -553,7 +553,7 @@ function fmOpenMediaUploader(e, callback) {
   return false;
 }
 
-jQuery(document).ready(function () {
+jQuery(function () {
   jQuery('.pp_display_on #pt0').click(function () {
     var isChecked = jQuery(this).prop('checked');
     jQuery('.pp_display_on input[type="checkbox"]').prop('checked', isChecked);

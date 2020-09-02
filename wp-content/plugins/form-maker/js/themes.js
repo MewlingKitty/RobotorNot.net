@@ -1,4 +1,4 @@
-jQuery(document).ready(function() {
+jQuery(function() {
   jQuery(".fm-themes-tabs li a").on("click", function(){
     jQuery(".fm-themes-tabs-container .fm-themes-container").addClass('fm-hide');
     jQuery(".fm-themes-tabs li a").removeClass("fm-theme-active-tab");

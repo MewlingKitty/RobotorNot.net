@@ -872,7 +872,7 @@ class  FMViewSubmissions_fm extends FMAdminView {
 				}
 			}
 			else {
-			  document.forms.admin_form.hide_label_list.value = '@<?php echo implode($templabels, '@@') ?>@' + '@payment_info@';
+			  document.forms.admin_form.hide_label_list.value = '@<?php echo implode('@@', $templabels) ?>@' + '@payment_info@';
 			  for (i = 0; i <= ChBAll.form.length; i++) {
 				if (typeof(ChBAll.form[i]) != "undefined") {
 				  if (ChBAll.form[i].type == "checkbox") {
@@ -1455,7 +1455,7 @@ class  FMViewSubmissions_fm extends FMAdminView {
 				?>
 			</select>
 			<script>
-				jQuery(document).ready(function () {
+				jQuery(function () {
 					jQuery( '#form_id' ).on("change", function () {
 						if (jQuery(this).val() > 0) {
 							var href = jQuery( '#form_id option:selected' ).attr( 'data-submission-href' );

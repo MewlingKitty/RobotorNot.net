@@ -709,7 +709,7 @@ function format_extended(num,w_title_value,w_middle_value,w_title_title,w_middle
 refresh_attr(num, 'type_name');
 refresh_id_name(num, 'type_name');
 
-jQuery(document).ready(function() {	
+jQuery(function() {
 	jQuery("label#"+num+"_mini_label_title").on("click", function() {		
 		if (jQuery(this).children('input').length == 0) {				
 			var title = "<input type='text' class='title' size='10' style='outline:none; border:none; background:none;' value=\""+jQuery(this).text()+"\">";	
@@ -2230,7 +2230,7 @@ function type_paypal_price(i, w_field_label, w_field_label_size, w_field_label_p
 change_class(w_class, i);
 refresh_attr(i, 'type_paypal_price');
 
-jQuery(document).ready(function() {	
+jQuery(function() {
 	jQuery("label#"+i+"_mini_label_dollars").on("click", function() {		
 		if (jQuery(this).children('input').length == 0) {				
 			var dollars = "<input type='text' class='dollars' style='outline:none; border:none; background:none;' value=\""+jQuery(this).text()+"\">";	

@@ -55,7 +55,7 @@ class FMModelVerify_email {
                 'element_label' => 'verifyInfo@' . $recipient,
               );
 
-              $updated = $wpdb->update( $wpdb->prefix . 'formmaker_submits', $data, $where, array('%s','$s'), array('%d','%s') );
+              $updated = $wpdb->update( $wpdb->prefix . 'formmaker_submits', $data, $where, array('%s','%s'), array('%d','%s') );
 
               if ( $updated !== FALSE ) {
                 $message = __('Your email has been successfully verified.', WDFMInstance(self::PLUGIN)->prefix);

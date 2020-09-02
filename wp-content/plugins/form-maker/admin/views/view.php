@@ -583,7 +583,7 @@ class FMAdminView {
           jQuery('.fm-limitation-alert-container').addClass('fm-hidden');
         }
       }
-      jQuery(document).ready(function() {
+      jQuery(function() {
         jQuery('.fm-limitation-alert-overlay, .fm-limitation-alert .fm-ico-delete').on('click', function() {
           fm_limitation_alert(false);
         });

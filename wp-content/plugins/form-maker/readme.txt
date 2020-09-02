@@ -3,7 +3,7 @@ Contributors: webdorado,10web,wdsupport,formmakersupport
 Tags:  form, forms, form builder, contact form, feedback, custom form, contact, web contact form, captcha, email, form manager, survey
 Requires at least: 4.6
 Tested up to: 5.5
-Stable tag: 1.13.40
+Stable tag: 1.13.41
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -561,6 +561,14 @@ Where **{{field_id}}** is the ID of the field you wish to prefill. Also, **{{par
 
 
 == Changelog ==
+
+= 1.13.41 =
+*  Fixed: Functionality to hide "Stars" field label.
+*  Fixed: Redirect to PayPal after Ajax submit.
+*  Fixed: Remove p tags from "Paragraph text" field when email is in text mode.
+*  Fixed: Allow apostrophe in email address.
+*  Fixed: Conflicts with WP5.5.
+*  Fixed: Conflicts with PHP7.4.
 
 = 1.13.40 =
 *  Fixed: Security issue.

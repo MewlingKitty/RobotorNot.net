@@ -2,7 +2,7 @@ var c;
 var a = new Array();
 var rated=false;
 
-jQuery(document).ready(function () {
+jQuery(function () {
   jQuery(".wd-datepicker").each(function () {
     jQuery(this).datepicker();
     jQuery(this).datepicker("option", "dateFormat", jQuery(this).data("format"));
@@ -1008,7 +1008,7 @@ function wd_check_email(wdid, form_id, message_check) {
   var element = jQuery("#wdform_" + wdid +"_element" + form_id);
   var element_confirm = jQuery("#wdform_" + wdid +"_1_element" + form_id);
   /* Regexp is also for Cyrillic alphabet */
-  var re = /^[\u0400-\u04FFa-zA-Z0-9.+_-]+@[\u0400-\u04FFa-zA-Z0-9.-]+\.[\u0400-\u04FFa-zA-Z]{2,61}$/;
+  var re = /^[\u0400-\u04FFa-zA-Z0-9'.+_-]+@[\u0400-\u04FFa-zA-Z0-9.-]+\.[\u0400-\u04FFa-zA-Z]{2,61}$/;
   if(jQuery(element).val()!="" && !re.test(jQuery.trim(jQuery(element).val())) && jQuery(element).attr("title") != jQuery(element).val()){
     jQuery("#check_email_" + wdid + "_" + form_id).remove();
     jQuery(element).parent().parent().parent().append("<div id='check_email_" + wdid + "_" + form_id + "'  class='fm-not-filled'>" + message_check + "</div>");
@@ -1806,6 +1806,17 @@ function getHostName(url) {
     return null;
   }
 }
+
+/* Check if response is json */
+function isJson(str) {
+  try {
+    JSON.parse(str);
+  } catch (e) {
+    return false;
+  }
+  return true;
+}
+
 function fm_submit(form_id) {
   fm_set_input_value('fm_empty_field_validation' + form_id, jQuery('#fm_empty_field_validation' + form_id).attr('data-value') );
   var ajax_submit = jQuery("#form" + form_id + " .button-submit:not(.save_button)").attr("data-ajax");
@@ -1823,6 +1834,23 @@ function fm_submit(form_id) {
       contentType: false,
       processData: false,
       success: function(response) {
+        /* Using for paypal ajax redirect */
+        if ( isJson(response) ) {
+          var data = JSON.parse(response);
+          var d = new Date();
+          var locationHref = window.location.href;
+          if( locationHref.indexOf("?") > -1 ) {
+            locationHref = locationHref+'&succes=' + d.getTime();
+          } else {
+            locationHref = locationHref+'?succes=' + d.getTime();
+          }
+          var return_url = '&return='+locationHref;
+          if( typeof data.paypal_url != 'undefined' ) {
+            var url = data.paypal_url+return_url;
+            window.location.replace(url);
+            return;
+          }
+        }
         if ( after_submit_redirect_url != 0 ) {
           window.location.replace(after_submit_redirect_url);
           return;
