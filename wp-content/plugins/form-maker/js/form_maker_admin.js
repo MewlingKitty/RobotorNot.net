@@ -1,6 +1,10 @@
-jQuery(document).on('ready fm_tab_loaded, ready fm_tab_email_loaded', function () {
+jQuery( function () {
   fm_admin_ready();
 });
+jQuery(document).on('fm_tab_loaded, fm_tab_email_loaded', function () {
+  fm_admin_ready();
+});
+
 jQuery(window).on('load', function () {
   jQuery('#fm_loading').hide();
   jQuery('#fm_admin_container').show();
@@ -422,7 +426,7 @@ function fm_popup(id) {
     var tbWindow = jQuery('#TB_window'), H = jQuery(window).height(), W = jQuery(window).width(), w, h;
     w = (tbWidth && tbWidth < W - 90) ? tbWidth : W - 40;
     h = (tbHeight && tbHeight < H - 60) ? tbHeight : H - 40;
-    if (tbWindow.size()) {
+    if (tbWindow.length) {
       tbWindow.width(w).height(h);
       jQuery('#TB_iframeContent').width(w).height(h - 27);
       tbWindow.css({'margin-left': '-' + parseInt((w / 2), 10) + 'px'});

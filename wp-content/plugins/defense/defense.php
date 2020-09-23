@@ -468,6 +468,32 @@ function defense_hof( $atts , $content = null){
 	global $wpdb;
 	$fmtable = $wpdb->prefix . "defense_images";;
 	
+	$topImages = $wpdb->get_results("select * from $fmtable where searching != 0");
+	
+	$k = 0;
+	print "<table>";
+	foreach($topImages as $topImage)
+	{
+		if($k % 6 == 0)
+			print "<tr>";
+			
+		print "<p>Defense Score</p><tr><td>{$topImage->rating}</td></tr></table></td>";		
+		
+		$k++;
+		
+		if($k % 6 == 0)
+			print "</tr>";
+
+	}
+	print "</table>";
+
+}
+
+function defense_search( $atts , $content = null){ 
+
+	global $wpdb;
+	$fmtable = $wpdb->prefix . "defense_images";;
+	
 	$topImages = $wpdb->get_results("select * from $fmtable where 1 order by `rating` DESC limit 0,20");
 	
 	$k = 0;
@@ -488,7 +514,6 @@ function defense_hof( $atts , $content = null){
 	print "</table>";
 
 }
-
 
 function defenseReport()
 {
@@ -715,6 +740,8 @@ add_shortcode( 'defense', 'defense_parse' );
 
 add_shortcode( 'defense_hall_of_fame', 'defense_hof' );
 
+add_shortcode( 'defense_search', 'defense_s' );
+
 add_action('wp_head', 'defense_page_scripts');
 
 add_action( 'wp_enqueue_scripts', 'add_defense_stylesheet' );
@@ -742,6 +769,8 @@ CREATE TABLE IF NOT EXISTS `{$fmprefix}defense_images` (
   `url` varchar(255) NOT NULL,
   `rating` double NOT NULL,
   `hash` varchar(255) NOT NULL,
+  `matching` int(11) NOT NULL,
+  `searching` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 );";
 

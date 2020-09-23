@@ -1,4 +1,4 @@
-/*! elementor - v3.0.5 - 31-08-2020 */
+/*! elementor - v3.0.9 - 17-09-2020 */
 .dialog-widget-content {
   background-color: #fff;
   position: absolute;
@@ -1288,7 +1288,8 @@ ul.elementor-icon-list-items.elementor-inline-items {
           -ms-transform: translateY(-50%);
               transform: translateY(-50%);
       left: 10px;
-      pointer-events: none; }
+      pointer-events: none;
+      text-shadow: 0 0 3px rgba(0, 0, 0, 0.3); }
   .elementor-field-group.elementor-field-type-select-multiple .elementor-select-wrapper:before {
     content: ''; }
 
@@ -1463,7 +1464,7 @@ ul.elementor-icon-list-items.elementor-inline-items {
     font-weight: normal;
     font-style: normal;
     vertical-align: middle;
-    margin-right: 5px; }
+    margin-left: 5px; }
   .elementor-message.elementor-message-danger {
     color: #d9534f; }
     .elementor-message.elementor-message-danger:before {

@@ -176,7 +176,7 @@
         ajax_similarity11( ajaxObj11, update_first_field_id11 );
       }
 	  }
-    jQuery(document).ready(function () {
+    jQuery(function () {
       fm_script_ready11();
     });
     

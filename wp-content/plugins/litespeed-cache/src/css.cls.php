@@ -217,11 +217,13 @@ class CSS extends Base {
 			if ( strpos( $match[ 0 ], '<link' ) === 0 ) {
 				$attrs = Utility::parse_attr( $match[ 1 ] );
 
-				if ( ! empty( $attrs[ 'rel' ] ) ) {
-					if ( $attrs[ 'rel' ] != 'stylesheet' ) {
-						if ( $attrs[ 'rel' ] != 'preload' || empty( $attrs[ 'as' ] ) || $attrs[ 'as' ] != 'style' ) {
-							continue;
-						}
+				if ( empty( $attrs[ 'rel' ] ) ) {
+					continue;
+				}
+
+				if ( $attrs[ 'rel' ] != 'stylesheet' ) {
+					if ( $attrs[ 'rel' ] != 'preload' || empty( $attrs[ 'as' ] ) || $attrs[ 'as' ] != 'style' ) {
+						continue;
 					}
 				}
 
@@ -240,7 +242,8 @@ class CSS extends Base {
 
 				// Load CSS content
 				$real_file = Utility::is_internal_file( $attrs[ 'href' ] );
-				if ( ! $real_file ) {
+				$postfix = pathinfo( parse_url( $attrs[ 'href' ], PHP_URL_PATH ), PATHINFO_EXTENSION );
+				if ( ! $real_file || $postfix != 'css' ) {
 					Debug2::debug2( '[CCSS] Load Remote CSS ' . $attrs[ 'href' ] );
 					$con = wp_remote_retrieve_body( wp_remote_get( $attrs[ 'href' ] ) );
 					if ( ! $con ) {

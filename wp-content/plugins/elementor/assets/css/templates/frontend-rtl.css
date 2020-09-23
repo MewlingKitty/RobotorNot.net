@@ -1108,7 +1108,8 @@ ul.elementor-icon-list-items.elementor-inline-items {
       top: 50%;
       transform: translateY(-50%);
       left: 10px;
-      pointer-events: none; }
+      pointer-events: none;
+      text-shadow: 0 0 3px rgba(0, 0, 0, 0.3); }
   .elementor-field-group.elementor-field-type-select-multiple .elementor-select-wrapper:before {
     content: ''; }
 
@@ -1244,7 +1245,7 @@ ul.elementor-icon-list-items.elementor-inline-items {
     font-weight: normal;
     font-style: normal;
     vertical-align: middle;
-    margin-right: 5px; }
+    margin-left: 5px; }
   .elementor-message.elementor-message-danger {
     color: #d9534f; }
     .elementor-message.elementor-message-danger:before {

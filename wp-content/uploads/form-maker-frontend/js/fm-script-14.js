@@ -176,7 +176,7 @@
         ajax_similarity14( ajaxObj14, update_first_field_id14 );
       }
 	  }
-    jQuery(document).ready(function () {
+    jQuery(function () {
       fm_script_ready14();
     });
     

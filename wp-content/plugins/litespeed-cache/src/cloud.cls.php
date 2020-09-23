@@ -682,9 +682,9 @@ class Cloud extends Base {
 	 * @access public
 	 */
 	public function show_promo() {
-		if ( ! $this->_api_key ) {
-			Admin_Display::error( Error::msg( 'lack_of_api_key' ), true );
-		}
+		// if ( ! $this->_api_key && ! defined( 'LITESPEED_DISMISS_DOMAIN_KEY' ) ) {
+		// 	Admin_Display::error( Error::msg( 'lack_of_api_key' ), true );
+		// }
 
 		if ( empty( $this->_summary[ 'promo' ] ) ) {
 			return;
@@ -978,7 +978,7 @@ class Cloud extends Base {
 		if ( is_wp_error( $response ) ) {
 			$error_message = $response->get_error_message();
 			Debug2::debug( '[CLoud] failed to get ip whitelist: ' . $error_message );
-			throw new \Exception( 'Failed to fetch QUIC.cloud whitelist' );
+			throw new \Exception( 'Failed to fetch QUIC.cloud whitelist ' . $error_message );
 		}
 
 		$json = json_decode( $response[ 'body' ], true );

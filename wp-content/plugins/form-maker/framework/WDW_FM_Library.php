@@ -2225,7 +2225,7 @@ class WDW_FM_Library {
       jQuery("#wdform_' . $id1 . '_state' . $form_id . '").parent().children("input:first, label:first").remove();
     }
     else {
-      if(jQuery("#wdform_' . $id1 . '_state' . $form_id . '").prop("tagName") == "SELECT") {
+      if(jQuery("#wdform_' . $id1 . '_state' . $form_id . '").attr("tagName") == "SELECT") {
         jQuery("#wdform_' . $id1 . '_state' . $form_id . '").parent().append("<input type=\"text\" id=\"wdform_' . $id1 . '_state' . $form_id . '\" name=\"wdform_' . ($id1 + 3) . '_state' . $form_id . '\" value=\"' . self::get( 'wdform_' . ($id1 + 3) . '_state' . $form_id, "", 'esc_html' ) . '\" style=\"width: 100%;\" ' . $param['attributes'] . '><label class=\"mini_label\">' . $w_mini_labels[3] . '</label>");
         jQuery("#wdform_' . $id1 . '_state' . $form_id . '").parent().children("select:first, label:first").remove();
       }
@@ -4124,8 +4124,8 @@ class WDW_FM_Library {
       var value_ids<?php echo $form_id ?> = {};
       jQuery.each( jQuery.parseJSON( inputIds<?php echo $form_id ?> ), function( key, values ) {
         jQuery.each( values, function( index, input_id ) {
-          tagName =  jQuery('#form<?php echo $form_id ?> [id^="wdform_'+ input_id +'_elemen"]').prop("tagName");
-          type =  jQuery('#form<?php echo $form_id ?> [id^="wdform_'+ input_id +'_elemen"]').prop("type");
+          tagName =  jQuery('#form<?php echo $form_id ?> [id^="wdform_'+ input_id +'_elemen"]').attr("tagName");
+          type =  jQuery('#form<?php echo $form_id ?> [id^="wdform_'+ input_id +'_elemen"]').attr("type");
           if ( tagName == 'INPUT' ) {
             input_value = jQuery('#form<?php echo $form_id ?> [id^="wdform_'+ input_id +'_elemen"]').val();
             if ( jQuery('#form<?php echo $form_id ?> [id^="wdform_'+ input_id +'_elemen"]').is(':checked') ) {
@@ -4149,7 +4149,7 @@ class WDW_FM_Library {
           jQuery(document).on('change', '#form<?php echo $form_id ?> [id^="wdform_'+ input_id +'_elemen"]', function() {
           var id = '';
           var changing_field_id = '';
-          if( jQuery(this).prop("tagName") == 'INPUT' ) {
+          if( jQuery(this).attr("tagName") == 'INPUT' ) {
             if( jQuery(this).is(':checked') ) {
               id = jQuery(this).val();
             }
@@ -4250,32 +4250,32 @@ class WDW_FM_Library {
    * @return array
    */
   public static function get_submissions_to_export() {
-	global $wpdb;
-	$params = array();
-	$form_id = self::get( 'form_id', 0, 'intval' );
-	$limitstart = self::get( 'limitstart', 0, 'intval' );
-	$page_num   = self::get( 'page_num', 0, 'intval' );
-	$search_labels = self::get( 'search_labels' );
-	$gr_ids = self::get('groupids');
-	$groupids = !empty($gr_ids) ? explode(',', $gr_ids) : ''; //TODO??//
+    global $wpdb;
+    $params = array();
+    $form_id = self::get( 'form_id', 0, 'intval' );
+    $limitstart = self::get( 'limitstart', 0, 'intval' );
+    $page_num   = self::get( 'page_num', 0, 'intval' );
+    $search_labels = self::get( 'search_labels' );
+    $gr_ids = self::get('groupids');
+    $groupids = !empty($gr_ids) ? explode(',', $gr_ids) : array(); //TODO??//
 
-	$verified_emails = isset($_REQUEST['verified_emails']) ? self::sanitize_array(json_decode(stripslashes($_REQUEST['verified_emails']), TRUE)) : array();
+    $verified_emails = isset($_REQUEST['verified_emails']) ? self::sanitize_array(json_decode(stripslashes($_REQUEST['verified_emails']), TRUE)) : array();
 
-	$paypal_info_fields = array(
-		'currency' => 'Currency',
-		'ord_last_modified' => 'Last modified',
-		'status' => 'Status',
-		'full_name' => 'Full Name',
-		'fax' => 'Fax',
-		'mobile_phone' => 'Mobile phone',
-		'email' => 'Email',
-		'phone' => 'Phone',
-		'address' => 'Address',
-		'paypal_info' => 'Paypal info',
-		'ipn' => 'IPN',
-		'tax' => 'Tax',
-		'shipping' => 'Shipping'
-	);
+    $paypal_info_fields = array(
+      'currency' => 'Currency',
+      'ord_last_modified' => 'Last modified',
+      'status' => 'Status',
+      'full_name' => 'Full Name',
+      'fax' => 'Fax',
+      'mobile_phone' => 'Mobile phone',
+      'email' => 'Email',
+      'phone' => 'Phone',
+      'address' => 'Address',
+      'paypal_info' => 'Paypal info',
+      'ipn' => 'IPN',
+      'tax' => 'Tax',
+      'shipping' => 'Shipping'
+    );
     $query = $wpdb->prepare("SELECT distinct element_label FROM " . $wpdb->prefix . "formmaker_submits where form_id=%d", $form_id);
     $labels = $wpdb->get_col($query);
     $query_lable = $wpdb->prepare("SELECT label_order,title FROM " . $wpdb->prefix . "formmaker where id=%d", $form_id);
@@ -4316,196 +4316,196 @@ class WDW_FM_Library {
     $m = count($sorted_labels);
     $wpdb->query("SET SESSION group_concat_max_len = 1000000");
     $rows = array();
-    if ( !empty($groupids) ) {
-		$query = $wpdb->prepare("SELECT `group_id`, `ip`, `date`, `user_id_wd`, GROUP_CONCAT( element_label SEPARATOR ',') AS `element_label`, GROUP_CONCAT( element_value SEPARATOR '*:*el_value*:*') AS `element_value` FROM " . $wpdb->prefix . "formmaker_submits WHERE `form_id` = %d and `group_id` IN(" . implode(',', $groupids) . ") GROUP BY `group_id` ORDER BY `date` ASC", $form_id);
-		$rows = $wpdb->get_results($query, OBJECT_K);
-    }
     $data = array();
-	$is_paypal_info = FALSE;
-    for ( $www = 0; $www < count($groupids); $www++ ) {
-      $i = $groupids[$www];
-      $field_key = array_search($i, $label_id);
-      if ( $label_type[$field_key] != 'type_arithmetic_captcha'
-        && $label_type[$field_key] != 'type_stripe' ) {
-        $data_temp = array();
-        $tt = $rows[$i];
-        $date = get_date_from_gmt( $tt->date );
-        $ip = $tt->ip;
-        $user_id = get_userdata($tt->user_id_wd);
-        $username = $user_id ? $user_id->display_name : "";
-        $useremail = $user_id ? $user_id->user_email : "";
-        $data_temp['ID'] = $i;
-        $data_temp['Submit date'] = $date;
-        $data_temp['Submitter\'s IP'] = $ip;
-        $data_temp['Submitter\'s Username'] = $username;
-        $data_temp['Submitter\'s Email Address'] = $useremail;
-        $element_labels = explode(',', $tt->element_label);
-        $element_values = explode('*:*el_value*:*', $tt->element_value);
-        for ( $h = 0; $h < $m; $h++ ) {
-          if ( isset($data_temp[$label_titles[$h]]) ) {
-            $label_titles[$h] .= '(1)';
-          }
-          if ( in_array($sorted_labels_id[$h], $element_labels) ) {
-            $element_value = $element_values[array_search($sorted_labels_id[$h], $element_labels)];
-            if ( strpos($element_value, "*@@url@@*") ) {
-              $file_names = '';
-              $new_files = explode("*@@url@@*", $element_value);
-              foreach ( $new_files as $new_file ) {
-                if ( $new_file ) {
-                  $file_names .= $new_file . ", ";
+    $is_paypal_info = FALSE;
+    if ( !empty($groupids) ) {
+      $query = $wpdb->prepare("SELECT `group_id`, `ip`, `date`, `user_id_wd`, GROUP_CONCAT( element_label SEPARATOR ',') AS `element_label`, GROUP_CONCAT( element_value SEPARATOR '*:*el_value*:*') AS `element_value` FROM " . $wpdb->prefix . "formmaker_submits WHERE `form_id` = %d and `group_id` IN(" . implode(',', $groupids) . ") GROUP BY `group_id` ORDER BY `date` ASC", $form_id);
+      $rows = $wpdb->get_results($query, OBJECT_K);
+      for ( $www = 0; $www < count($groupids); $www++ ) {
+        $i = $groupids[$www];
+        $field_key = array_search($i, $label_id);
+        if ( $label_type[$field_key] != 'type_arithmetic_captcha'
+          && $label_type[$field_key] != 'type_stripe' ) {
+          $data_temp = array();
+          $tt = $rows[$i];
+          $date = get_date_from_gmt( $tt->date );
+          $ip = $tt->ip;
+          $user_id = get_userdata($tt->user_id_wd);
+          $username = $user_id ? $user_id->display_name : "";
+          $useremail = $user_id ? $user_id->user_email : "";
+          $data_temp['ID'] = $i;
+          $data_temp['Submit date'] = $date;
+          $data_temp['Submitter\'s IP'] = $ip;
+          $data_temp['Submitter\'s Username'] = $username;
+          $data_temp['Submitter\'s Email Address'] = $useremail;
+          $element_labels = explode(',', $tt->element_label);
+          $element_values = explode('*:*el_value*:*', $tt->element_value);
+          for ( $h = 0; $h < $m; $h++ ) {
+            if ( isset($data_temp[$label_titles[$h]]) ) {
+              $label_titles[$h] .= '(1)';
+            }
+            if ( in_array($sorted_labels_id[$h], $element_labels) ) {
+              $element_value = $element_values[array_search($sorted_labels_id[$h], $element_labels)];
+              if ( strpos($element_value, "*@@url@@*") ) {
+                $file_names = '';
+                $new_files = explode("*@@url@@*", $element_value);
+                foreach ( $new_files as $new_file ) {
+                  if ( $new_file ) {
+                    $file_names .= $new_file . ", ";
+                  }
                 }
+                $data_temp[stripslashes($label_titles[$h])] = $file_names;
               }
-              $data_temp[stripslashes($label_titles[$h])] = $file_names;
-            }
-            elseif ( strpos($element_value, "***br***") ) {
-              $element_value = str_replace("***br***", ', ', $element_value);
-              if ( strpos($element_value, "***quantity***") ) {
-                $element_value = str_replace("***quantity***", '', $element_value);
-              }
-              if ( strpos($element_value, "***property***") ) {
-                $element_value = str_replace("***property***", '', $element_value);
-              }
-              if ( substr($element_value, -2) == ', ' ) {
-                $data_temp[stripslashes($label_titles[$h])] = substr($element_value, 0, -2);
-              }
-              else {
-                $data_temp[stripslashes($label_titles[$h])] = $element_value;
-              }
-            }
-            elseif ( strpos($element_value, "***map***") ) {
-              $data_temp[stripslashes($label_titles[$h])] = 'Longitude:' . str_replace("***map***", ', Latitude:', $element_value);
-            }
-            elseif ( strpos($element_value, "***star_rating***") ) {
-              $element = str_replace("***star_rating***", '', $element_value);
-              $element = explode("***", $element);
-              $data_temp[stripslashes($label_titles[$h])] = ' ' . $element[1] . '/' . $element[0];
-            }
-            elseif ( strpos($element_value, "@@@") !== FALSE ) {
-              $data_temp[stripslashes($label_titles[$h])] = str_replace("@@@", ' ', $element_value);
-            }
-            elseif ( strpos($element_value, "***grading***") ) {
-              $element = str_replace("***grading***", '', $element_value);
-              $grading = explode(":", $element);
-              $items_count = sizeof($grading) - 1;
-              $items = "";
-              $total = "";
-              for ( $k = 0; $k < $items_count / 2; $k++ ) {
-                $items .= $grading[$items_count / 2 + $k] . ": " . $grading[$k] . ", ";
-                $total += $grading[$k];
-              }
-              $items .= "Total: " . $total;
-              $data_temp[stripslashes($label_titles[$h])] = $items;
-            }
-            elseif ( strpos($element_value, "***matrix***") ) {
-              $element = str_replace("***matrix***", '', $element_value);
-              $matrix_value = explode('***', $element);
-              $matrix_value = array_slice($matrix_value, 0, count($matrix_value) - 1);
-              $mat_rows = $matrix_value[0];
-              $mat_columns = $matrix_value[$mat_rows + 1];
-              $matrix = "";
-              $aaa = array();
-              $var_checkbox = 1;
-              $selected_value = "";
-              $selected_value_yes = "";
-              $selected_value_no = "";
-              for ( $k = 1; $k <= $mat_rows; $k++ ) {
-                if ( $matrix_value[$mat_rows + $mat_columns + 2] == "radio" ) {
-                  if ( $matrix_value[$mat_rows + $mat_columns + 2 + $k] == 0 ) {
-                    $checked = "0";
-                    $aaa[1] = "";
-                  }
-                  else {
-                    $aaa = explode("_", $matrix_value[$mat_rows + $mat_columns + 2 + $k]);
-                  }
-                  for ( $l = 1; $l <= $mat_columns; $l++ ) {
-                    $checked = $aaa[1] == $l ? '1' : '0';
-                    $matrix .= '[' . $matrix_value[$k] . ',' . $matrix_value[$mat_rows + 1 + $l] . ']=' . $checked . "; ";
-                  }
+              elseif ( strpos($element_value, "***br***") ) {
+                $element_value = str_replace("***br***", ', ', $element_value);
+                if ( strpos($element_value, "***quantity***") ) {
+                  $element_value = str_replace("***quantity***", '', $element_value);
+                }
+                if ( strpos($element_value, "***property***") ) {
+                  $element_value = str_replace("***property***", '', $element_value);
+                }
+                if ( substr($element_value, -2) == ', ' ) {
+                  $data_temp[stripslashes($label_titles[$h])] = substr($element_value, 0, -2);
                 }
                 else {
-                  if ( $matrix_value[$mat_rows + $mat_columns + 2] == "checkbox" ) {
+                  $data_temp[stripslashes($label_titles[$h])] = $element_value;
+                }
+              }
+              elseif ( strpos($element_value, "***map***") ) {
+                $data_temp[stripslashes($label_titles[$h])] = 'Longitude:' . str_replace("***map***", ', Latitude:', $element_value);
+              }
+              elseif ( strpos($element_value, "***star_rating***") ) {
+                $element = str_replace("***star_rating***", '', $element_value);
+                $element = explode("***", $element);
+                $data_temp[stripslashes($label_titles[$h])] = ' ' . $element[1] . '/' . $element[0];
+              }
+              elseif ( strpos($element_value, "@@@") !== FALSE ) {
+                $data_temp[stripslashes($label_titles[$h])] = str_replace("@@@", ' ', $element_value);
+              }
+              elseif ( strpos($element_value, "***grading***") ) {
+                $element = str_replace("***grading***", '', $element_value);
+                $grading = explode(":", $element);
+                $items_count = sizeof($grading) - 1;
+                $items = "";
+                $total = "";
+                for ( $k = 0; $k < $items_count / 2; $k++ ) {
+                  $items .= $grading[$items_count / 2 + $k] . ": " . $grading[$k] . ", ";
+                  $total += $grading[$k];
+                }
+                $items .= "Total: " . $total;
+                $data_temp[stripslashes($label_titles[$h])] = $items;
+              }
+              elseif ( strpos($element_value, "***matrix***") ) {
+                $element = str_replace("***matrix***", '', $element_value);
+                $matrix_value = explode('***', $element);
+                $matrix_value = array_slice($matrix_value, 0, count($matrix_value) - 1);
+                $mat_rows = $matrix_value[0];
+                $mat_columns = $matrix_value[$mat_rows + 1];
+                $matrix = "";
+                $aaa = array();
+                $var_checkbox = 1;
+                $selected_value = "";
+                $selected_value_yes = "";
+                $selected_value_no = "";
+                for ( $k = 1; $k <= $mat_rows; $k++ ) {
+                  if ( $matrix_value[$mat_rows + $mat_columns + 2] == "radio" ) {
+                    if ( $matrix_value[$mat_rows + $mat_columns + 2 + $k] == 0 ) {
+                      $checked = "0";
+                      $aaa[1] = "";
+                    }
+                    else {
+                      $aaa = explode("_", $matrix_value[$mat_rows + $mat_columns + 2 + $k]);
+                    }
                     for ( $l = 1; $l <= $mat_columns; $l++ ) {
-                      $checked = $matrix_value[$mat_rows + $mat_columns + 2 + $var_checkbox] == 1 ? '1' : '0';
+                      $checked = $aaa[1] == $l ? '1' : '0';
                       $matrix .= '[' . $matrix_value[$k] . ',' . $matrix_value[$mat_rows + 1 + $l] . ']=' . $checked . "; ";
-                      $var_checkbox++;
                     }
                   }
                   else {
-                    if ( $matrix_value[$mat_rows + $mat_columns + 2] == "text" ) {
+                    if ( $matrix_value[$mat_rows + $mat_columns + 2] == "checkbox" ) {
                       for ( $l = 1; $l <= $mat_columns; $l++ ) {
-                        $text_value = $matrix_value[$mat_rows + $mat_columns + 2 + $var_checkbox];
-                        $matrix .= '[' . $matrix_value[$k] . ',' . $matrix_value[$mat_rows + 1 + $l] . ']=' . $text_value . "; ";
+                        $checked = $matrix_value[$mat_rows + $mat_columns + 2 + $var_checkbox] == 1 ? '1' : '0';
+                        $matrix .= '[' . $matrix_value[$k] . ',' . $matrix_value[$mat_rows + 1 + $l] . ']=' . $checked . "; ";
                         $var_checkbox++;
                       }
                     }
                     else {
-                      for ( $l = 1; $l <= $mat_columns; $l++ ) {
-                        $selected_text = $matrix_value[$mat_rows + $mat_columns + 2 + $var_checkbox];
-                        $matrix .= '[' . $matrix_value[$k] . ',' . $matrix_value[$mat_rows + 1 + $l] . ']=' . $selected_text . "; ";
-                        $var_checkbox++;
+                      if ( $matrix_value[$mat_rows + $mat_columns + 2] == "text" ) {
+                        for ( $l = 1; $l <= $mat_columns; $l++ ) {
+                          $text_value = $matrix_value[$mat_rows + $mat_columns + 2 + $var_checkbox];
+                          $matrix .= '[' . $matrix_value[$k] . ',' . $matrix_value[$mat_rows + 1 + $l] . ']=' . $text_value . "; ";
+                          $var_checkbox++;
+                        }
+                      }
+                      else {
+                        for ( $l = 1; $l <= $mat_columns; $l++ ) {
+                          $selected_text = $matrix_value[$mat_rows + $mat_columns + 2 + $var_checkbox];
+                          $matrix .= '[' . $matrix_value[$k] . ',' . $matrix_value[$mat_rows + 1 + $l] . ']=' . $selected_text . "; ";
+                          $var_checkbox++;
+                        }
                       }
                     }
                   }
                 }
-              }
-              $data_temp[stripslashes($label_titles[$h])] = $matrix;
-            }
-            else {
-              $val = strip_tags(htmlspecialchars_decode($element_value));
-              $val = stripslashes(str_replace('&#039;', "'", $val));
-              $data_temp[stripslashes($label_titles[$h])] = $val;
-            }
-          }
-          else {
-            $data_temp[stripslashes($label_titles[$h])] = '';
-          }
-          if ( isset($verified_emails[$sorted_labels_id[$h]]) && $sorted_types[$h] == "type_submitter_mail" ) {
-            if ( $data_temp[stripslashes($label_titles[$h])] == '' ) {
-              $data_temp[stripslashes($label_titles[$h]) . '(verified)'] = '';
-            }
-            else {
-              if ( in_array($i, $verified_emails[$sorted_labels_id[$h]]) ) {
-                $data_temp[stripslashes($label_titles[$h]) . '(verified)'] = 'yes';
+                $data_temp[stripslashes($label_titles[$h])] = $matrix;
               }
               else {
-                $data_temp[stripslashes($label_titles[$h]) . '(verified)'] = 'no';
+                $val = strip_tags(htmlspecialchars_decode($element_value));
+                $val = stripslashes(str_replace('&#039;', "'", $val));
+                $data_temp[stripslashes($label_titles[$h])] = $val;
+              }
+            }
+            else {
+              $data_temp[stripslashes($label_titles[$h])] = '';
+            }
+            if ( isset($verified_emails[$sorted_labels_id[$h]]) && $sorted_types[$h] == "type_submitter_mail" ) {
+              if ( $data_temp[stripslashes($label_titles[$h])] == '' ) {
+                $data_temp[stripslashes($label_titles[$h]) . '(verified)'] = '';
+              }
+              else {
+                if ( in_array($i, $verified_emails[$sorted_labels_id[$h]]) ) {
+                  $data_temp[stripslashes($label_titles[$h]) . '(verified)'] = 'yes';
+                }
+                else {
+                  $data_temp[stripslashes($label_titles[$h]) . '(verified)'] = 'no';
+                }
               }
             }
           }
-        }
-        $item_total = $wpdb->get_var($wpdb->prepare("SELECT `element_value` FROM " . $wpdb->prefix . "formmaker_submits where group_id=%d AND element_label=%s", $i, 'item_total'));
-        $total = $wpdb->get_var($wpdb->prepare("SELECT `element_value` FROM " . $wpdb->prefix . "formmaker_submits where group_id=%d AND element_label=%s", $i, 'total'));
-        $payment_status = $wpdb->get_var($wpdb->prepare("SELECT `element_value` FROM " . $wpdb->prefix . "formmaker_submits where group_id=%d AND element_label=%s", $i, '0'));
-        if ( $item_total ) {
-          $data_temp['Item Total'] = $item_total;
-        }
-        if ( $total ) {
-          $data_temp['Total'] = $total;
-        }
-        if ( $payment_status ) {
-          $data_temp['Payment Status'] = $payment_status;
-        }
-        $query = $wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "formmaker_sessions where group_id=%d", $i);
-        $paypal_info = $wpdb->get_results($query);
-        if ( $paypal_info ) {
-          $is_paypal_info = TRUE;
-        }
-        if ( $is_paypal_info ) {
-          foreach ( $paypal_info_fields as $key => $paypal_info_field ) {
-            if ( $paypal_info ) {
-              $data_temp['PAYPAL_' . $paypal_info_field ] = $paypal_info[0]->$key;
-            }
-            else {
-              $data_temp['PAYPAL_' . $paypal_info_field ] = '';
+          $item_total = $wpdb->get_var($wpdb->prepare("SELECT `element_value` FROM " . $wpdb->prefix . "formmaker_submits where group_id=%d AND element_label=%s", $i, 'item_total'));
+          $total = $wpdb->get_var($wpdb->prepare("SELECT `element_value` FROM " . $wpdb->prefix . "formmaker_submits where group_id=%d AND element_label=%s", $i, 'total'));
+          $payment_status = $wpdb->get_var($wpdb->prepare("SELECT `element_value` FROM " . $wpdb->prefix . "formmaker_submits where group_id=%d AND element_label=%s", $i, '0'));
+          if ( $item_total ) {
+            $data_temp['Item Total'] = $item_total;
+          }
+          if ( $total ) {
+            $data_temp['Total'] = $total;
+          }
+          if ( $payment_status ) {
+            $data_temp['Payment Status'] = $payment_status;
+          }
+          $query = $wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "formmaker_sessions where group_id=%d", $i);
+          $paypal_info = $wpdb->get_results($query);
+          if ( $paypal_info ) {
+            $is_paypal_info = TRUE;
+          }
+          if ( $is_paypal_info ) {
+            foreach ( $paypal_info_fields as $key => $paypal_info_field ) {
+              if ( $paypal_info ) {
+                $data_temp['PAYPAL_' . $paypal_info_field ] = $paypal_info[0]->$key;
+              }
+              else {
+                $data_temp['PAYPAL_' . $paypal_info_field ] = '';
+              }
             }
           }
+          $data[$i] = $data_temp;
         }
-        $data[$i] = $data_temp;
       }
     }
-	array_push($params, $data);
-	array_push($params, $title);
-	array_push($params, $is_paypal_info);
+    array_push($params, $data);
+    array_push($params, $title);
+    array_push($params, $is_paypal_info);
 
     return $params;
   }
@@ -5149,7 +5149,7 @@ class WDW_FM_Library {
       for ( $i = 0; $i < 9; $i++ ) {
         array_pop($labels_parameters);
       }
-      $query = $wpdb->prepare("SELECT distinct element_label FROM " . $wpdb->prefix . "formmaker_submits WHERE " . '%s', $where);
+      $query = "SELECT distinct element_label FROM " . $wpdb->prefix . "formmaker_submits WHERE " . $where;
       $results = $wpdb->get_results($query);
       for ( $i = 0; $i < count($results); $i++ ) {
         array_push($labels, $results[$i]->element_label);
@@ -5220,45 +5220,45 @@ class WDW_FM_Library {
       }
       switch ( count($join_query) ) {
         case 0:
-          $join = $wpdb->prepare('SELECT distinct group_id FROM ' . $wpdb->prefix . 'formmaker_submits WHERE ' . '%s', $where);
+          $join = 'SELECT distinct group_id FROM ' . $wpdb->prefix . 'formmaker_submits WHERE ' . $where;
           break;
         case 1:
           if ( $join_query[0] == 'sort' ) {
-            $join = $wpdb->prepare('SELECT group_id FROM ' . $wpdb->prefix . 'formmaker_submits WHERE ' . '%s' . ' AND element_label="' . '%s' . '" ', $where, $join_where[0]['label']);
+            $join = $wpdb->prepare('SELECT group_id FROM ' . $wpdb->prefix . 'formmaker_submits WHERE ' . $where . ' AND element_label="' . '%s' . '" ', $join_where[0]['label']);
             $join_count = $wpdb->prepare('SELECT count(group_id) FROM ' . $wpdb->prefix . 'formmaker_submits WHERE form_id="' . '%d' . '" AND element_label="' . '%s' . '" ', $form_id, $join_where[0]['label']);
             $orderby = $wpdb->prepare(' ORDER BY `element_value` ' . '%s', $asc_or_desc);
           }
           else {
             if ( isset($join_where[0]['search']) ) {
-              $join = $wpdb->prepare('SELECT group_id FROM ' . $wpdb->prefix . 'formmaker_submits WHERE element_label="' . '%s' . '" AND  (element_value LIKE "%%' . '%s' . '%%" OR element_value LIKE "%%' . '%s' . '%%")  AND ' . '%s', $join_where[0]['label'], $join_where[0]['search'], str_replace(' ', '@@@', $join_where[0]['search']), $where);
+              $join = $wpdb->prepare('SELECT group_id FROM ' . $wpdb->prefix . 'formmaker_submits WHERE element_label="' . '%s' . '" AND  (element_value LIKE "%%' . '%s' . '%%" OR element_value LIKE "%%' . '%s' . '%%")  AND ' . $where, $join_where[0]['label'], $join_where[0]['search'], str_replace(' ', '@@@', $join_where[0]['search']));
             }
             else {
-              $join = $wpdb->prepare('SELECT group_id FROM ' . $wpdb->prefix . 'formmaker_submits WHERE  ' . $ver_where . '%s',$where);
+              $join = 'SELECT group_id FROM ' . $wpdb->prefix . 'formmaker_submits WHERE  ' . $ver_where . $where;
             }
           }
           break;
         default:
           if ( !empty($join_verified) ) {
             if ( isset($join_where[0]['search']) ) {
-              $join = $wpdb->prepare('SELECT t.group_id from (SELECT t1.group_id from (SELECT ' . $cols . ' FROM ' . $wpdb->prefix . 'formmaker_submits WHERE (element_label="' . '%s' . '" AND (element_value LIKE "%%' . '%s' . '%%" OR element_value LIKE "%%' .'%s' . '%%")) AND ' . '%s' . ' ) as t1 JOIN (SELECT group_id FROM ' . $wpdb->prefix . 'formmaker_submits WHERE  ' . $ver_where . '%s' . ') as t2 ON t1.group_id = t2.group_id) as t ',$join_where[0]['label'], $join_where[0]['search'], str_replace(' ', '@@@', $join_where[0]['search']), $where, $where);
+              $join = $wpdb->prepare('SELECT t.group_id from (SELECT t1.group_id from (SELECT ' . $cols . ' FROM ' . $wpdb->prefix . 'formmaker_submits WHERE (element_label="' . '%s' . '" AND (element_value LIKE "%%' . '%s' . '%%" OR element_value LIKE "%%' .'%s' . '%%")) AND ' . $where . ' ) as t1 JOIN (SELECT group_id FROM ' . $wpdb->prefix . 'formmaker_submits WHERE  ' . $ver_where . $where . ') as t2 ON t1.group_id = t2.group_id) as t ',$join_where[0]['label'], $join_where[0]['search'], str_replace(' ', '@@@', $join_where[0]['search']));
             }
             else {
-              $join = $wpdb->prepare('SELECT t.group_id FROM (SELECT ' . $cols . '  FROM ' . $wpdb->prefix . 'formmaker_submits WHERE ' . $ver_where . '%s' . ') as t ', $where);
+              $join = 'SELECT t.group_id FROM (SELECT ' . $cols . '  FROM ' . $wpdb->prefix . 'formmaker_submits WHERE ' . $ver_where . $where . ') as t ';
             }
           }
           else {
-            $join = $wpdb->prepare('SELECT t.group_id FROM (SELECT ' . $cols . '  FROM ' . $wpdb->prefix . 'formmaker_submits WHERE ' . '%s' . ' AND element_label="' . '%s' . '" AND  (element_value LIKE "%%' . '%s' . '%%" OR element_value LIKE "%%' . '%s' . '%%" )) as t ', $where, $join_where[0]['label'], $join_where[0]['search'], str_replace(' ', '@@@', $join_where[0]['search']));
+            $join = $wpdb->prepare('SELECT t.group_id FROM (SELECT ' . $cols . '  FROM ' . $wpdb->prefix . 'formmaker_submits WHERE ' . $where . ' AND element_label="' . '%s' . '" AND  (element_value LIKE "%%' . '%s' . '%%" OR element_value LIKE "%%' . '%s' . '%%" )) as t ', $join_where[0]['label'], $join_where[0]['search'], str_replace(' ', '@@@', $join_where[0]['search']));
           }
           for ( $key = 1; $key < count($join_query); $key++ ) {
             if ( $join_query[$key] == 'sort' ) {
               if ( isset($join_where[$key]) ) {
-                $join .= $wpdb->prepare('LEFT JOIN (SELECT group_id as group_id' . '%s' . ', element_value   FROM ' . $wpdb->prefix . 'formmaker_submits WHERE ' . '%s' . ' AND element_label="' . '%s' . '") as t' . '%s' . ' ON t' . '%s' . '.group_id' . '%s' . '=t.group_id ', $key, $where, $join_where[$key]['label'], $key, $key, $key);
+                $join .= $wpdb->prepare('LEFT JOIN (SELECT group_id as group_id' . '%s' . ', element_value   FROM ' . $wpdb->prefix . 'formmaker_submits WHERE ' . $where . ' AND element_label="' . '%s' . '") as t' . '%s' . ' ON t' . '%s' . '.group_id' . '%s' . '=t.group_id ', $key, $join_where[$key]['label'], $key, $key, $key);
                 $orderby = $wpdb->prepare(' ORDER BY t' . '%s' . '.`element_value` ' . '%s' . '', $key, $asc_or_desc);
               }
             }
             else {
               if ( isset($join_where[$key]) ) {
-                $join .= $wpdb->prepare('INNER JOIN (SELECT group_id as group_id' . '%s' . ' FROM ' . $wpdb->prefix . 'formmaker_submits WHERE ' . '%s' . ' AND element_label="' . '%s' . '" AND  (element_value LIKE "%%' . $join_where[$key]['search'] . '%%" OR element_value LIKE "%%' . '%s' . '%%")) as t' . '%s' . ' ON t' . '%s' . '.group_id' . '%s' . '=t.group_id ', $key, $where, $join_where[$key]['label'], str_replace(' ', '@@@', $join_where[$key]['search']), $key, $key, $key);
+                $join .= $wpdb->prepare('INNER JOIN (SELECT group_id as group_id' . '%s' . ' FROM ' . $wpdb->prefix . 'formmaker_submits WHERE ' . $where . ' AND element_label="' . '%s' . '" AND  (element_value LIKE "%%' . $join_where[$key]['search'] . '%%" OR element_value LIKE "%%' . '%s' . '%%")) as t' . '%s' . ' ON t' . '%s' . '.group_id' . '%s' . '=t.group_id ', $key, $join_where[$key]['label'], str_replace(' ', '@@@', $join_where[$key]['search']), $key, $key, $key);
               }
             }
           }

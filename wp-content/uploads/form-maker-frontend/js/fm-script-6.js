@@ -122,8 +122,8 @@
       var value_ids6 = {};
       jQuery.each( jQuery.parseJSON( inputIds6 ), function( key, values ) {
         jQuery.each( values, function( index, input_id ) {
-          tagName =  jQuery('#form6 [id^="wdform_'+ input_id +'_elemen"]').prop("tagName");
-          type =  jQuery('#form6 [id^="wdform_'+ input_id +'_elemen"]').prop("type");
+          tagName =  jQuery('#form6 [id^="wdform_'+ input_id +'_elemen"]').attr("tagName");
+          type =  jQuery('#form6 [id^="wdform_'+ input_id +'_elemen"]').attr("type");
           if ( tagName == 'INPUT' ) {
             input_value = jQuery('#form6 [id^="wdform_'+ input_id +'_elemen"]').val();
             if ( jQuery('#form6 [id^="wdform_'+ input_id +'_elemen"]').is(':checked') ) {
@@ -147,7 +147,7 @@
           jQuery(document).on('change', '#form6 [id^="wdform_'+ input_id +'_elemen"]', function() {
           var id = '';
           var changing_field_id = '';
-          if( jQuery(this).prop("tagName") == 'INPUT' ) {
+          if( jQuery(this).attr("tagName") == 'INPUT' ) {
             if( jQuery(this).is(':checked') ) {
               id = jQuery(this).val();
             }
@@ -176,7 +176,7 @@
         ajax_similarity6( ajaxObj6, update_first_field_id6 );
       }
 	  }
-    jQuery(document).ready(function () {
+    jQuery(function () {
       fm_script_ready6();
     });
     

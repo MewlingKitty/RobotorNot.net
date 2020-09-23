@@ -468,7 +468,7 @@ function offense_hof( $atts , $content = null){
 	global $wpdb;
 	$fmtable = $wpdb->prefix . "offense_images";;
 	
-	$topImages = $wpdb->get_results("select * from $fmtable where 1 order by `rating` DESC limit 0,20");
+	$topImages = $wpdb->get_results("select * from $fmtable where searching = 1 limit 0,1");
 	
 	$k = 0;
 	print "<table>";
@@ -477,7 +477,7 @@ function offense_hof( $atts , $content = null){
 		if($k % 6 == 0)
 			print "<tr>";
 			
-		print "<td><table><tr><td><img src=\"{$topImage->url}\" width=\"100\" ></td></tr><tr><td>{$topImage->rating}</td></tr></table></td>";		
+		print "<td><table><tr><td>{$topImage->id}</td></tr></table></td><tr><td><img src=\"{$topImage->url}\" width=\"100\" ><p>Offense Score</p></td></tr><tr><td>{$topImage->rating}</td></tr></table></td>";		
 		$k++;
 		
 		if($k % 6 == 0)

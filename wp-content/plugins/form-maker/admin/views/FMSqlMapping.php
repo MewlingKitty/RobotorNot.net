@@ -197,10 +197,10 @@ class FMViewFormMakerSQLMapping extends FMAdminView {
         ?>);
       function dis(id, x) {
         if (x) {
-          jQuery('#' + id).removeAttr('disabled');
+          jQuery('#' + id).prop('disabled', false);
         }
         else {
-          jQuery('#' + id).attr('disabled', 'disabled');
+          jQuery('#' + id).prop('disabled', true);
         }
       }
       function update_vis() {
@@ -992,8 +992,8 @@ class FMViewFormMakerSQLMapping extends FMAdminView {
             jQuery("#struct").removeClass("fm_loading");
             if (data == 1) {
               jQuery("#struct").html('<div style="font-size: 22px; text-align: center; padding-top: 15px;">Could not connect to MySQL.</div>')
-              jQuery(".connect").removeAttr('disabled');
-              jQuery("input[type='radio']").removeAttr('disabled', '');
+              jQuery(".connect").prop('disabled', false);
+              jQuery("input[type='radio']").prop('disabled', false);
             }
             else {
               jQuery("#struct").html(data.replace("<a", "<a target='_blank'"));
@@ -1353,10 +1353,10 @@ class FMViewFormMakerSQLMapping extends FMAdminView {
         ?>);
       function dis(id, x) {
         if (x) {
-          jQuery('#' + id).removeAttr('disabled');
+          jQuery('#' + id).prop('disabled', false);
         }
         else {
-          jQuery('#' + id).attr('disabled', 'disabled');
+          jQuery('#' + id).prop('disabled', true);
         }
       }
       function update_vis() {

@@ -187,7 +187,7 @@ function set_columns_history_checked() {
 	if ( getFormLocalStorage().show_hide_column_ids ) {
 		var show_hide_column_ids = getFormLocalStorage().show_hide_column_ids;
 		var checkboxs = jQuery('#ChBDiv input[type=checkbox]');
-			checkboxs.filter(':checkbox').removeAttr('checked');
+			checkboxs.filter(':checkbox').prop('checked', false);
 		var ChBAll = document.getElementById('ChBAll');
 		if ( checkboxs.length != show_hide_column_ids.length ) {
 			jQuery('#ChBAll').addClass('fm-remove_before');

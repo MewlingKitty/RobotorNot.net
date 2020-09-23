@@ -920,7 +920,7 @@ jQuery(document).on('click','.sel-option', function() {
   jQuery(this).addClass('sel-ed');
   var tekval = jQuery(this).attr('value');
   tekval = typeof(tekval) != 'undefined' ? tekval : tektext;
-  jQuery(this).parent('.sel-options').parent('.sel-imul').parent('.sel-wrap').children('select').children('option').removeAttr('selected').each(function() {
+  jQuery(this).parent('.sel-options').parent('.sel-imul').parent('.sel-wrap').children('select').children('option').prop('selected', false).each(function() {
     if (jQuery(this).html() == tektext) {
       jQuery(this).attr('selected', 'select');
     }
@@ -1855,7 +1855,7 @@ function fm_submit(form_id) {
           window.location.replace(after_submit_redirect_url);
           return;
         }
-        jQuery("#form" + form_id + " .button-submit").removeAttr("disabled");
+        jQuery("#form" + form_id + " .button-submit").prop("disabled", false);
         jQuery('#form'+form_id+' .fm-submit-loading').hide();
 
         var result = jQuery(response).find('#form'+form_id).html();
@@ -2371,10 +2371,10 @@ function fm_privacy_policy_check(that) {
   var element = jQuery(that);
   var button = element.parents('.wdform_row').find('.button-submit');
   if (element.is(':checked')) {
-    button.removeAttr('disabled');
+    button.prop('disabled', false);
   }
   else {
-    button.attr('disabled', 'disabled');
+    button.prop('disabled', true);
   }
 }
 function fm_html_entities(str) {
